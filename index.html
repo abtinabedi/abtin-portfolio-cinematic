@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abtin Abedi</title>
+  <meta name="description" content="Abtin Abedi, software developer. Cinematic websites, e-commerce and apps." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2319C98C'/%3E%3Ctext x='16' y='23' font-family='Arial Black,Arial' font-size='19' font-weight='900' text-anchor='middle' fill='%230A0B0A'%3EA%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <div class="preloader" id="preloader" aria-hidden="true">
+    <p class="preloader__name">ABTIN&nbsp;ABEDI</p>
+    <p class="preloader__pct"><span id="preloader-pct">0</span>%</p>
+  </div>
+
+  <header class="nav">
+    <a class="nav__mark" href="#top" aria-label="Abtin Abedi, back to top">AA</a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO: pinned canvas orbit, scrubbed by scroll -->
+    <section class="hero" id="hero" aria-label="Intro">
+      <div class="hero__sticky">
+        <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+        <div class="hero__vignette" aria-hidden="true"></div>
+        <div class="hero__title">
+          <h1 class="hero__name" aria-label="Abtin Abedi">
+            <span class="hero__line hero__line--a" aria-hidden="true">
+              <span class="ltr" style="--i:0">A</span><span class="ltr" style="--i:1">B</span><span class="ltr" style="--i:2">T</span><span class="ltr" style="--i:3">I</span><span class="ltr" style="--i:4">N</span>
+            </span>
+            <span class="hero__line hero__line--b" aria-hidden="true">
+              <span class="ltr" style="--i:5">A</span><span class="ltr" style="--i:6">B</span><span class="ltr" style="--i:7">E</span><span class="ltr" style="--i:8">D</span><span class="ltr" style="--i:9">I</span>
+            </span>
+          </h1>
+          <p class="hero__sub"><span class="ltr" style="--i:10">Software Developer</span></p>
+        </div>
+        <div class="hero__progress" aria-hidden="true"><span id="hero-progress-bar"></span></div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats" aria-label="Numbers">
+      <ul class="stats__grid">
+        <li class="stat"><span class="stat__num">+<span class="stat__count" data-count="15">0</span></span><span class="stat__label">Projects</span></li>
+        <li class="stat"><span class="stat__num">+<span class="stat__count" data-count="3">0</span></span><span class="stat__label">Years of Experience</span></li>
+        <li class="stat"><span class="stat__num">+<span class="stat__count" data-count="7">0</span></span><span class="stat__label">Technologies</span></li>
+        <li class="stat"><span class="stat__num">+<span class="stat__count" data-count="10">0</span></span><span class="stat__label">Websites Built</span></li>
+      </ul>
+    </section>
+
+    <!-- PILLARS: pinned over the builder clip, revealed one at a time -->
+    <section class="pillars" id="pillars" aria-label="What I build">
+      <div class="pillars__sticky">
+        <video class="pillars__video" src="assets/video/builder.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+        <div class="pillars__scrim" aria-hidden="true"></div>
+        <div class="pillars__rail" aria-hidden="true"><span id="pillars-rail-fill"></span></div>
+        <div class="pillars__slides">
+          <div class="pillar" data-pillar="0">
+            <h2 class="pillar__title">CINEMATIC<br />WEBSITES</h2>
+            <p class="pillar__desc">Scroll-driven, film-grade sites that make a brand impossible to forget.</p>
+          </div>
+          <div class="pillar" data-pillar="1">
+            <h2 class="pillar__title">E-COMMERCE<br />WEBSITES</h2>
+            <p class="pillar__desc">Stores engineered to load fast, rank well and sell.</p>
+          </div>
+          <div class="pillar" data-pillar="2">
+            <h2 class="pillar__title">MOBILE &amp;<br />WEB APPS</h2>
+            <p class="pillar__desc">Products that feel native on every screen they touch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORK: cards over the closer clip -->
+    <section class="work" id="work" aria-label="Selected work">
+      <div class="work__bg" aria-hidden="true">
+        <video class="work__video" src="assets/video/closer.mp4" muted loop playsinline autoplay preload="metadata"></video>
+        <div class="work__scrim"></div>
+      </div>
+      <div class="work__content">
+        <h2 class="work__heading reveal">SELECTED<br />WORK</h2>
+        <div class="work__list">
+          <article class="project reveal">
+            <a class="project__link" href="#contact">
+              <span class="project__meta">Trading tool</span>
+              <h3 class="project__title">FX POSITION SIZE CALCULATOR</h3>
+              <p class="project__pitch">Precision risk sizing for forex traders, in one glance.</p>
+              <span class="project__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+          <article class="project reveal">
+            <a class="project__link" href="#contact">
+              <span class="project__meta">AI assistant</span>
+              <h3 class="project__title">FENBOT</h3>
+              <p class="project__pitch">An AI chatbot that answers a whole university's questions.</p>
+              <span class="project__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+          <article class="project reveal">
+            <a class="project__link" href="#contact">
+              <span class="project__meta">Productivity app</span>
+              <h3 class="project__title">LIFEBOARD</h3>
+              <p class="project__pitch">One board for projects, habits and everything life throws at you.</p>
+              <span class="project__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINALE -->
+    <section class="finale" id="contact" aria-label="Contact">
+      <h2 class="finale__title"><span class="finale__word reveal" style="--d:0">LET'S</span><span class="finale__word reveal" style="--d:1">BUILD</span><span class="finale__word reveal" style="--d:2">SOMETHING</span><span class="finale__word finale__word--accent reveal" style="--d:3">GREAT.</span></h2>
+      <div class="finale__actions reveal" style="--d:4">
+        <a class="btn btn--primary" href="mailto:apten1370@gmail.com">Start a project</a>
+        <a class="btn btn--ghost" href="#work">See the work</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copy">&copy; 2026 Abtin Abedi</p>
+    <nav class="footer__links" aria-label="Profiles">
+      <a href="https://github.com/abtinabedi" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/abtinabedi/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:apten1370@gmail.com">Email</a>
+    </nav>
+  </footer>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <script src="vendor/lenis.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

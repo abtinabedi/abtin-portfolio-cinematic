@@ -1,0 +1,8 @@
+node_modules/
+logs/
+*.log
+.DS_Store
+
+# Master clips: large, only needed to regenerate the frame sequence locally.
+# Keep them backed up outside the repo (or use git-lfs) rather than deploying them.
+assets/source/
