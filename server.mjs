@@ -30,6 +30,7 @@ const MIME = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".ico": "image/x-icon",
+  ".pdf": "application/pdf",
   ".mp4": "video/mp4",
   ".webm": "video/webm",
   ".woff2": "font/woff2",
@@ -59,6 +60,9 @@ function etagFor(file, st) {
 
 function cacheControl(urlPath, ext) {
   if (ext === ".html") return "no-cache";               // always revalidate the shell
+  // A document like the CV lives under /assets but is replaced in place under
+  // the same name, so it must not inherit the immutable year below.
+  if (ext === ".pdf") return "public, max-age=3600, must-revalidate";
   if (IMMUTABLE.test(urlPath)) return "public, max-age=31536000, immutable";
   return "public, max-age=3600, must-revalidate";        // css/js: short, revalidated
 }
@@ -76,22 +80,59 @@ const server = createServer((req, res) => {
     res.writeHead(400).end("bad request");
     return;
   }
+  const rawPath = urlPath;
   if (urlPath.endsWith("/")) urlPath += "index.html";
 
-  const file = normalize(join(ROOT, urlPath));
+  let file = normalize(join(ROOT, urlPath));
 
   // path traversal + dotfile guard
-  if (!file.startsWith(ROOT + sep) || file.split(sep).some((s) => s.startsWith("."))) {
+  const safe = (f) => f.startsWith(ROOT + sep) && !f.split(sep).some((s) => s.startsWith("."));
+  if (!safe(file)) {
     res.writeHead(403).end("forbidden");
     return;
   }
 
-  let st;
+  let st = null;
   try {
-    st = statSync(file);
-    if (st.isDirectory()) throw new Error("directory");
-  } catch {
-    res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("404 not found");
+    const found = statSync(file);
+    if (!found.isDirectory()) st = found;
+  } catch {}
+
+  // Pretty URLs: /works and /works/ both serve works.html. Extensionless only,
+  // so this can never shadow a real file or reach outside ROOT.
+  if (!st) {
+    const bare = rawPath.replace(/\/+$/, "");
+    if (bare && !extname(bare)) {
+      const alt = normalize(join(ROOT, bare + ".html"));
+      if (safe(alt)) {
+        try {
+          const found = statSync(alt);
+          if (found.isFile()) {
+            file = alt;
+            urlPath = bare + ".html";
+            st = found;
+          }
+        } catch {}
+      }
+    }
+  }
+
+  // Netlify serves 404.html for anything missing; do the same locally so the
+  // styled page is what you develop against.
+  if (!st) {
+    const notFound = join(ROOT, "404.html");
+    try {
+      const body = readFileSync(notFound);
+      res
+        .writeHead(404, {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "no-cache",
+          "X-Content-Type-Options": "nosniff",
+        })
+        .end(req.method === "HEAD" ? undefined : body);
+    } catch {
+      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }).end("404 not found");
+    }
     return;
   }
 

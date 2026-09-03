@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page not found — Abtin Abedi</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2319C98C'/%3E%3Ctext x='16' y='23' font-family='Arial Black,Arial' font-size='19' font-weight='900' text-anchor='middle' fill='%230A0B0A'%3EA%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    /* Page-specific and tiny, so it stays here rather than adding weight to
+       main.css on every page for a screen most visitors never see. The header
+       is styled here too: the .wnav rules live in css/works.css, and loading a
+       whole stylesheet for one back link is not worth it. */
+    .nf-back {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(1.25rem, 4vw, 3rem);
+    }
+    .nf-back a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--display);
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      color: var(--cream);
+      transition: color 0.3s ease;
+    }
+    .nf-back a:hover {
+      color: var(--emerald);
+    }
+    .nf-back__arrow {
+      display: inline-block;
+      font-family: var(--body);
+      font-size: 0.95rem;
+      color: var(--emerald);
+      transition: transform 0.4s var(--ease);
+    }
+    .nf-back a:hover .nf-back__arrow {
+      transform: translateX(-5px);
+    }
+    .nf {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.6rem;
+      padding: 8rem 1.5rem 6rem;
+      text-align: center;
+    }
+    .nf__code {
+      font-family: var(--display);
+      font-size: clamp(6rem, 26vw, 17rem);
+      line-height: 0.82;
+      letter-spacing: 0.02em;
+      color: var(--emerald);
+    }
+    .nf__title {
+      font-family: var(--display);
+      font-size: clamp(1.6rem, 5vw, 2.6rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .nf__text {
+      max-width: 46ch;
+      color: var(--cream-dim);
+      font-size: 1rem;
+    }
+    .nf__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      justify-content: center;
+      margin-top: 0.6rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nf-back">
+    <a href="/">
+      <span class="nf-back__arrow" aria-hidden="true">&larr;</span>
+      <span>Abtin Abedi</span>
+    </a>
+  </header>
+
+  <main class="nf">
+    <p class="nf__code">404</p>
+    <h1 class="nf__title">This page does not exist</h1>
+    <p class="nf__text">
+      The link is broken or the page has moved. Everything worth seeing is one
+      click away.
+    </p>
+    <div class="nf__actions">
+      <a class="btn btn--primary" href="/">Back home</a>
+      <a class="btn btn--ghost" href="/works">See the projects</a>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__copy">&copy; 2026 Abtin Abedi</p>
+    <nav class="footer__links" aria-label="Profiles">
+      <a href="/">Home</a>
+      <a href="https://wa.me/905528631208" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://github.com/abtinabedi" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/abtinabedi/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:apten1370@gmail.com">Email</a>
+    </nav>
+  </footer>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <script src="/js/cursor.js"></script>
+</body>
+</html>

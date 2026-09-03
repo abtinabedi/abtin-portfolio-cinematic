@@ -20,6 +20,7 @@
   const pillars = [...document.querySelectorAll(".pillar")];
   const railFill = $("#pillars-rail-fill");
   const preloaderPct = $("#preloader-pct");
+  const tiltCard = $(".work__all");
 
   const FRAMES_DIR = "assets/frames/hero/";
 
@@ -166,6 +167,77 @@
     railFill.style.transform = "scaleY(" + pp + ")";
   }
 
+  /* ---------- tilt on the projects card ----------
+     The React Bits <TiltedCard /> leans on `motion` springs; this is the same
+     spring, integrated by hand so it can ride the loop that is already running.
+     Amplitude is well under the component default: a card this wide shears
+     badly past about 8 degrees, and a 1.1x scale on a full-bleed banner reads
+     as a glitch rather than a lift. */
+
+  const SPRING = { stiffness: 100, damping: 30, mass: 2 };
+  const ROTATE_AMPLITUDE = 7;
+  const SCALE_ON_HOVER = 1.015;
+
+  const tilt = {
+    rx: { value: 0, velocity: 0, target: 0 },
+    ry: { value: 0, velocity: 0, target: 0 },
+    sc: { value: 1, velocity: 0, target: 1 },
+    running: false,
+  };
+
+  function initTilt() {
+    if (!tiltCard || reducedMotion) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    tiltCard.addEventListener("pointermove", (e) => {
+      const rect = tiltCard.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left - rect.width / 2;
+      const offsetY = e.clientY - rect.top - rect.height / 2;
+      tilt.rx.target = (offsetY / (rect.height / 2)) * -ROTATE_AMPLITUDE;
+      tilt.ry.target = (offsetX / (rect.width / 2)) * ROTATE_AMPLITUDE;
+      tilt.running = true;
+    });
+
+    tiltCard.addEventListener("pointerenter", () => {
+      tilt.sc.target = SCALE_ON_HOVER;
+      tilt.running = true;
+    });
+
+    tiltCard.addEventListener("pointerleave", () => {
+      tilt.rx.target = 0;
+      tilt.ry.target = 0;
+      tilt.sc.target = 1;
+    });
+  }
+
+  function spring(s, dt) {
+    const force = -SPRING.stiffness * (s.value - s.target) - SPRING.damping * s.velocity;
+    s.velocity += (force / SPRING.mass) * dt;
+    s.value += s.velocity * dt;
+  }
+
+  const atRest = (s, epsilon) =>
+    Math.abs(s.value - s.target) < epsilon && Math.abs(s.velocity) < epsilon * 4;
+
+  function updateTilt(dt) {
+    if (!tilt.running) return;
+
+    spring(tilt.rx, dt);
+    spring(tilt.ry, dt);
+    spring(tilt.sc, dt);
+
+    tiltCard.style.transform =
+      "rotateX(" + tilt.rx.value.toFixed(3) + "deg) rotateY(" +
+      tilt.ry.value.toFixed(3) + "deg) scale(" + tilt.sc.value.toFixed(4) + ")";
+
+    // settled back at rest: drop the inline transform and stop writing styles
+    if (atRest(tilt.rx, 0.01) && atRest(tilt.ry, 0.01) && atRest(tilt.sc, 0.0002) &&
+        tilt.rx.target === 0 && tilt.ry.target === 0 && tilt.sc.target === 1) {
+      tiltCard.style.transform = "";
+      tilt.running = false;
+    }
+  }
+
   /* ---------- observers ---------- */
 
   function initObservers() {
@@ -193,6 +265,19 @@
       { threshold: 0.5 }
     );
     document.querySelectorAll(".stat__count").forEach((el) => statsIo.observe(el));
+
+    // the gradient border re-rasterises on every frame it turns
+    if (tiltCard) {
+      const borderIo = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            entry.target.classList.toggle("is-spinning", entry.isIntersecting);
+          }
+        },
+        { threshold: 0 }
+      );
+      borderIo.observe(tiltCard);
+    }
 
     // play background clips only while on screen
     const videoIo = new IntersectionObserver(
@@ -250,6 +335,7 @@
     }
     initAnchors(lenis);
     initObservers();
+    initTilt();
 
     let resizeRaf = 0;
     window.addEventListener("resize", () => {
@@ -257,9 +343,13 @@
       resizeRaf = requestAnimationFrame(measure);
     });
 
+    let lastTime = performance.now();
     const loop = (time) => {
+      const dt = Math.min((time - lastTime) / 1000, 0.05);
+      lastTime = time;
       if (lenis) lenis.raf(time);
       update(window.scrollY);
+      updateTilt(dt);
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);

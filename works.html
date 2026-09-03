@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>All Projects — Abtin Abedi</title>
+  <meta name="description" content="Every project Abtin Abedi has built, grouped by what it is made of: WordPress sites, React and Next.js apps, and Flutter mobile apps." />
+  <link rel="canonical" href="https://abtin.works/works" />
+  <meta property="og:title" content="All Projects — Abtin Abedi" />
+  <meta property="og:description" content="WordPress sites, React and Next.js apps, Flutter mobile apps — with the stack and the thinking behind each." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://abtin.works/works" />
+  <meta property="og:site_name" content="Abtin Abedi" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2319C98C'/%3E%3Ctext x='16' y='23' font-family='Arial Black,Arial' font-size='19' font-weight='900' text-anchor='middle' fill='%230A0B0A'%3EA%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/works.css" />
+</head>
+<body class="works-page">
+
+  <a class="skip" href="#decks">Skip to projects</a>
+
+  <header class="wnav">
+    <a class="wnav__back" href="/">
+      <span class="wnav__back-arrow" aria-hidden="true">&larr;</span>
+      <span>Abtin Abedi</span>
+    </a>
+    <nav class="wnav__links" aria-label="Primary">
+      <a class="wnav__gh" href="https://github.com/abtinabedi" target="_blank" rel="noopener">
+        GitHub <span aria-hidden="true">&#8599;</span>
+      </a>
+      <a class="nav__cv" href="assets/cv/abtin-abedi-cv.pdf" download="Abtin-Abedi-CV.pdf">
+        <span class="icon icon--download" aria-hidden="true"></span>
+        <span class="nav__cv-full">Download CV</span>
+        <span class="nav__cv-short" aria-hidden="true">CV</span>
+      </a>
+    </nav>
+  </header>
+
+  <div class="wrk">
+
+    <!-- ==================================================================
+         INDEX RAIL
+         One .wrk__group per category, one <li> per project inside it.
+         Both must mirror the deck stream on the right, in the same order.
+         Category icons come from assets/icons/ via the .icon--* classes
+         in css/works.css, so adding a category is: drop the svg in, add
+         one .icon--<name> rule, use it here and in the matching section.
+    =================================================================== -->
+    <aside class="wrk__index" aria-label="Project index">
+      <h1 class="wrk__title">
+        <span class="icon wrk__title-icon icon--web" aria-hidden="true"></span>
+        All Work
+      </h1>
+
+      <nav class="wrk__nav" aria-label="Experience and projects">
+
+        <a class="wrk__link wrk__link--lead" href="#experience">
+          <span class="icon wrk__lead-icon icon--work" aria-hidden="true"></span>
+          <span class="wrk__name">Experience</span>
+        </a>
+
+        <div class="wrk__group" data-cat="cat-wordpress">
+          <p class="wrk__group-head">
+            <span class="icon wrk__group-icon icon--wordpress" aria-hidden="true"></span>
+            <span class="wrk__group-name">Website</span> <span class="wrk__group-sub">(WordPress)</span>
+          </p>
+          <ol class="wrk__list">
+            <li>
+              <a class="wrk__link" href="#corporate-website">
+                <span class="wrk__num" aria-hidden="true">01</span>
+                <span class="wrk__name">Corporate Website</span>
+              </a>
+            </li>
+          </ol>
+        </div>
+
+        <div class="wrk__group" data-cat="cat-react">
+          <p class="wrk__group-head">
+            <span class="icon wrk__group-icon icon--react" aria-hidden="true"></span>
+            <span class="wrk__group-name">Website</span> <span class="wrk__group-sub">(React / Next.js)</span>
+          </p>
+          <ol class="wrk__list">
+            <li>
+              <a class="wrk__link" href="#fx-calculator">
+                <span class="wrk__num" aria-hidden="true">02</span>
+                <span class="wrk__name">FX Position Size Calculator</span>
+              </a>
+            </li>
+            <li>
+              <a class="wrk__link" href="#fenbot">
+                <span class="wrk__num" aria-hidden="true">03</span>
+                <span class="wrk__name">FenBot</span>
+              </a>
+            </li>
+          </ol>
+        </div>
+
+        <div class="wrk__group" data-cat="cat-flutter">
+          <p class="wrk__group-head">
+            <span class="icon wrk__group-icon icon--mobile" aria-hidden="true"></span>
+            <span class="wrk__group-name">Mobile App</span> <span class="wrk__group-sub">(Flutter)</span>
+          </p>
+          <ol class="wrk__list">
+            <li>
+              <a class="wrk__link" href="#lifeboard">
+                <span class="wrk__num" aria-hidden="true">04</span>
+                <span class="wrk__name">Lifeboard</span>
+              </a>
+            </li>
+          </ol>
+        </div>
+
+      </nav>
+
+      <div class="wrk__more">
+        <p class="wrk__more-label">More work on</p>
+        <a class="wrk__more-btn" href="https://github.com/abtinabedi" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </aside>
+
+    <!-- ==================================================================
+         DECK STREAM
+         One <section class="cat"> per category, holding its projects.
+
+         Two frame templates are available, pick per project:
+
+           desktop -> <article class="deck deck--wide">
+                      .deck__frame--desktop  (browser chrome + 16:10 page)
+           mobile  -> <article class="deck">
+                      .deck__frame--mobile   (phone, 360:640)
+
+         Swap the inline <svg class="schematic"> for
+         <img src="assets/shots/whatever.png" alt="..."> once real
+         screenshots exist; the frame styles both the same way.
+    =================================================================== -->
+    <main class="wrk__decks" id="decks">
+
+      <!-- ============ EXPERIENCE =====================================
+           Information only: role, company, engagement, dates, place.
+           An ongoing role carries data-since="YYYY-MM" and works.js keeps its
+           duration current, so the written value never goes stale. Roles held
+           at the same company are nested under it rather than repeated.
+      ============================================================== -->
+      <section class="cv" id="experience" aria-labelledby="cv-title">
+        <header class="cat__head">
+          <span class="icon cat__icon icon--work" aria-hidden="true"></span>
+          <h2 class="cat__title" id="cv-title">Experience</h2>
+          <p class="cat__count"><span>04</span> roles</p>
+        </header>
+
+        <ol class="cv__list">
+
+          <li class="cv__item cv__item--current">
+            <span class="cv__dot" aria-hidden="true"></span>
+            <div class="cv__body">
+              <p class="cv__period">
+                <time datetime="2026-07">Jul 2026</time> &ndash; Present
+                <span class="cv__dur" data-since="2026-07">3 mos</span>
+              </p>
+              <h3 class="cv__role">Web Development Intern</h3>
+              <p class="cv__org">Prismind Media <span aria-hidden="true">&middot;</span> Internship</p>
+              <p class="cv__place">&#304;zmir, T&uuml;rkiye <span aria-hidden="true">&middot;</span> On-site</p>
+            </div>
+          </li>
+
+          <li class="cv__item">
+            <span class="cv__dot" aria-hidden="true"></span>
+            <div class="cv__body">
+              <p class="cv__period">
+                <time datetime="2025-02">Feb 2025</time> &ndash; <time datetime="2025-10">Oct 2025</time>
+                <span class="cv__dur">9 mos</span>
+              </p>
+              <h3 class="cv__role">Web Developer</h3>
+              <p class="cv__org">Fano Net Dijital D&ouml;n&uuml;&#351;&uuml;m Dan&#305;&#351;manl&#305;&#287;&#305; <span aria-hidden="true">&middot;</span> Part-time</p>
+              <p class="cv__place">&#304;zmir, T&uuml;rkiye <span aria-hidden="true">&middot;</span> Hybrid</p>
+            </div>
+          </li>
+
+          <li class="cv__item">
+            <span class="cv__dot" aria-hidden="true"></span>
+            <div class="cv__body">
+              <p class="cv__period">
+                <time datetime="2023-03">Mar 2023</time> &ndash; <time datetime="2023-12">Dec 2023</time>
+                <span class="cv__dur">10 mos</span>
+              </p>
+              <h3 class="cv__role">Webmaso</h3>
+              <p class="cv__place">Tehran Province, Iran</p>
+
+              <ol class="cv__roles">
+                <li>
+                  <h4 class="cv__subrole">Web Developer</h4>
+                  <p class="cv__org">Part-time <span aria-hidden="true">&middot;</span> Mar 2023 &ndash; Dec 2023</p>
+                </li>
+                <li>
+                  <h4 class="cv__subrole">WordPress Developer</h4>
+                  <p class="cv__org">Freelance <span aria-hidden="true">&middot;</span> Mar 2023 &ndash; Dec 2023 <span aria-hidden="true">&middot;</span> Remote</p>
+                </li>
+              </ol>
+            </div>
+          </li>
+
+        </ol>
+      </section>
+
+      <!-- ============ WEBSITE (WORDPRESS) ============================ -->
+      <section class="cat" id="cat-wordpress" aria-labelledby="cat-wordpress-title">
+        <header class="cat__head">
+          <span class="icon cat__icon icon--wordpress" aria-hidden="true"></span>
+          <h2 class="cat__title" id="cat-wordpress-title">Website <em>(WordPress)</em></h2>
+          <p class="cat__count"><span>01</span> project</p>
+        </header>
+
+        <!-- TEMPLATE: this one is a placeholder showing the desktop layout.
+             Replace it with a real WordPress build. -->
+        <article class="deck deck--wide" id="corporate-website">
+          <div class="deck__visual">
+            <div class="deck__glow" aria-hidden="true"></div>
+            <div class="deck__frame deck__frame--desktop">
+              <div class="deck__chrome" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <p class="deck__url">example.com</p>
+              </div>
+              <svg class="schematic" viewBox="0 0 800 500" role="img" aria-label="Corporate website layout: navigation, hero with a call to action, three feature cards and a footer">
+                <rect width="800" height="500" fill="#0d100e"/>
+
+                <rect x="40" y="30" width="74" height="14" rx="3" fill="#f2ede3" opacity=".55"/>
+                <g fill="#f2ede3" fill-opacity=".26">
+                  <rect x="430" y="34" width="46" height="7" rx="3.5"/><rect x="494" y="34" width="52" height="7" rx="3.5"/>
+                  <rect x="564" y="34" width="40" height="7" rx="3.5"/><rect x="622" y="34" width="48" height="7" rx="3.5"/>
+                </g>
+                <rect x="690" y="24" width="70" height="26" rx="4" fill="#19c98c" opacity=".85"/>
+                <line x1="0" y1="74" x2="800" y2="74" stroke="#f2ede3" stroke-opacity=".1"/>
+
+                <rect x="40" y="126" width="300" height="20" rx="4" fill="#f2ede3" opacity=".62"/>
+                <rect x="40" y="156" width="236" height="20" rx="4" fill="#f2ede3" opacity=".62"/>
+                <rect x="40" y="198" width="284" height="8" rx="4" fill="#f2ede3" opacity=".24"/>
+                <rect x="40" y="214" width="212" height="8" rx="4" fill="#f2ede3" opacity=".24"/>
+                <rect x="40" y="248" width="112" height="34" rx="4" fill="#19c98c"/>
+                <rect x="164" y="248" width="104" height="34" rx="4" fill="none" stroke="#f2ede3" stroke-opacity=".3"/>
+
+                <rect x="428" y="112" width="332" height="188" rx="8" fill="#f2ede3" opacity=".06"/>
+                <rect x="428.5" y="112.5" width="331" height="187" rx="8" fill="none" stroke="#f2ede3" stroke-opacity=".12"/>
+                <circle cx="512" cy="172" r="22" fill="#19c98c" opacity=".3"/>
+                <path d="M452 262l58-56 44 42 40-38 62 58z" fill="#f2ede3" opacity=".14"/>
+
+                <line x1="40" y1="340" x2="760" y2="340" stroke="#f2ede3" stroke-opacity=".1"/>
+                <g>
+                  <rect x="40" y="368" width="220" height="88" rx="8" fill="#f2ede3" opacity=".05"/>
+                  <rect x="64" y="392" width="20" height="20" rx="4" fill="#19c98c" opacity=".65"/>
+                  <rect x="64" y="424" width="128" height="7" rx="3.5" fill="#f2ede3" opacity=".3"/>
+                  <rect x="64" y="438" width="88" height="6" rx="3" fill="#f2ede3" opacity=".16"/>
+
+                  <rect x="290" y="368" width="220" height="88" rx="8" fill="#f2ede3" opacity=".05"/>
+                  <rect x="314" y="392" width="20" height="20" rx="4" fill="#19c98c" opacity=".65"/>
+                  <rect x="314" y="424" width="144" height="7" rx="3.5" fill="#f2ede3" opacity=".3"/>
+                  <rect x="314" y="438" width="96" height="6" rx="3" fill="#f2ede3" opacity=".16"/>
+
+                  <rect x="540" y="368" width="220" height="88" rx="8" fill="#f2ede3" opacity=".05"/>
+                  <rect x="564" y="392" width="20" height="20" rx="4" fill="#19c98c" opacity=".65"/>
+                  <rect x="564" y="424" width="116" height="7" rx="3.5" fill="#f2ede3" opacity=".3"/>
+                  <rect x="564" y="438" width="132" height="6" rx="3" fill="#f2ede3" opacity=".16"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="deck__body wrk-reveal">
+            <p class="deck__eyebrow">
+              <span class="icon deck__eyebrow-icon icon--wordpress" aria-hidden="true"></span>
+              2026 <span aria-hidden="true">&middot;</span> WordPress
+            </p>
+            <h3 class="deck__title">Corporate Website</h3>
+            <p class="deck__lead">A company site the client can actually keep up to date on their own.</p>
+            <ul class="deck__points">
+              <li>Built on a custom theme rather than a page builder, so pages stay fast and the markup stays something a person can read.</li>
+              <li>Editable content is exposed as proper fields, which means the client changes copy and images without touching layout.</li>
+              <li>Ships with the boring essentials done: caching, image sizes, forms, sitemap and metadata.</li>
+            </ul>
+            <p class="deck__stack-label">Built with</p>
+            <ul class="deck__stack">
+              <li>WordPress</li><li>PHP</li><li>Custom theme</li><li>ACF</li>
+            </ul>
+            <div class="deck__actions">
+              <a class="btn btn--primary btn--sm btn--icon" href="https://wa.me/905528631208" target="_blank" rel="noopener"><span class="icon icon--whatsapp" aria-hidden="true"></span>Ask about it</a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/abtinabedi" target="_blank" rel="noopener">Source</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ WEBSITE (REACT / NEXT.JS) ====================== -->
+      <section class="cat" id="cat-react" aria-labelledby="cat-react-title">
+        <header class="cat__head">
+          <span class="icon cat__icon icon--react" aria-hidden="true"></span>
+          <h2 class="cat__title" id="cat-react-title">Website <em>(React / Next.js)</em></h2>
+          <p class="cat__count"><span>02</span> projects</p>
+        </header>
+
+        <article class="deck deck--wide" id="fx-calculator">
+          <div class="deck__visual">
+            <div class="deck__glow" aria-hidden="true"></div>
+            <div class="deck__frame deck__frame--desktop">
+              <div class="deck__chrome" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <p class="deck__url">position-size-calculator</p>
+              </div>
+              <svg class="schematic" viewBox="0 0 800 500" role="img" aria-label="Position size calculator: risk inputs on the left produce a lot size, charted against price on the right">
+                <rect width="800" height="500" fill="#0d100e"/>
+
+                <rect x="0" y="0" width="170" height="500" fill="#f2ede3" opacity=".03"/>
+                <line x1="170" y1="0" x2="170" y2="500" stroke="#f2ede3" stroke-opacity=".1"/>
+                <rect x="28" y="30" width="16" height="16" rx="4" fill="#19c98c"/>
+                <rect x="54" y="34" width="62" height="8" rx="4" fill="#f2ede3" opacity=".45"/>
+                <rect x="20" y="82" width="130" height="30" rx="5" fill="#19c98c" opacity=".14"/>
+                <rect x="20" y="82" width="3" height="30" rx="1.5" fill="#19c98c"/>
+                <rect x="40" y="93" width="72" height="7" rx="3.5" fill="#19c98c" opacity=".7"/>
+                <g fill="#f2ede3" fill-opacity=".2">
+                  <rect x="40" y="129" width="60" height="7" rx="3.5"/><rect x="40" y="163" width="80" height="7" rx="3.5"/>
+                  <rect x="40" y="197" width="52" height="7" rx="3.5"/><rect x="40" y="231" width="72" height="7" rx="3.5"/>
+                </g>
+
+                <text x="206" y="46" fill="#19c98c" font-family="monospace" font-size="11" letter-spacing="3">POSITION SIZE</text>
+
+                <rect x="206" y="72" width="290" height="176" rx="8" fill="#f2ede3" opacity=".04"/>
+                <rect x="206.5" y="72.5" width="289" height="175" rx="8" fill="none" stroke="#f2ede3" stroke-opacity=".12"/>
+                <text x="230" y="108" fill="#f2ede3" opacity=".5" font-family="monospace" font-size="10" letter-spacing="1.6">ACCOUNT</text>
+                <rect x="366" y="94" width="106" height="20" rx="4" fill="#f2ede3" opacity=".1"/>
+                <text x="462" y="108" text-anchor="end" fill="#f2ede3" opacity=".8" font-family="monospace" font-size="10">25,000.00</text>
+                <text x="230" y="150" fill="#f2ede3" opacity=".5" font-family="monospace" font-size="10" letter-spacing="1.6">RISK</text>
+                <rect x="366" y="136" width="106" height="20" rx="4" fill="#f2ede3" opacity=".1"/>
+                <text x="462" y="150" text-anchor="end" fill="#f2ede3" opacity=".8" font-family="monospace" font-size="10">1.00 %</text>
+                <text x="230" y="192" fill="#f2ede3" opacity=".5" font-family="monospace" font-size="10" letter-spacing="1.6">STOP</text>
+                <rect x="366" y="178" width="106" height="20" rx="4" fill="#f2ede3" opacity=".1"/>
+                <text x="462" y="192" text-anchor="end" fill="#f2ede3" opacity=".8" font-family="monospace" font-size="10">32 PIPS</text>
+                <line x1="230" y1="212" x2="472" y2="212" stroke="#f2ede3" stroke-opacity=".1"/>
+                <text x="230" y="234" fill="#f2ede3" opacity=".5" font-family="monospace" font-size="10" letter-spacing="1.6">RISK AMOUNT</text>
+                <text x="472" y="234" text-anchor="end" fill="#f2ede3" opacity=".8" font-family="monospace" font-size="10">250.00</text>
+
+                <rect x="206" y="272" width="290" height="88" rx="8" fill="#19c98c" opacity=".1"/>
+                <rect x="206.5" y="272.5" width="289" height="87" rx="8" fill="none" stroke="#19c98c" stroke-opacity=".45"/>
+                <text x="230" y="300" fill="#19c98c" opacity=".8" font-family="monospace" font-size="10" letter-spacing="2.4">LOT SIZE</text>
+                <text x="230" y="342" fill="#19c98c" font-family="monospace" font-size="34" font-weight="bold">0.78</text>
+                <text x="472" y="342" text-anchor="end" fill="#19c98c" opacity=".55" font-family="monospace" font-size="11">STANDARD</text>
+
+                <rect x="206" y="386" width="140" height="36" rx="5" fill="#19c98c"/>
+                <rect x="358" y="386" width="120" height="36" rx="5" fill="none" stroke="#f2ede3" stroke-opacity=".28"/>
+
+                <rect x="528" y="72" width="244" height="350" rx="8" fill="#f2ede3" opacity=".03"/>
+                <rect x="528.5" y="72.5" width="243" height="349" rx="8" fill="none" stroke="#f2ede3" stroke-opacity=".1"/>
+                <rect x="548" y="264" width="204" height="40" fill="#19c98c" opacity=".08"/>
+                <line x1="548" y1="264" x2="752" y2="264" stroke="#19c98c" stroke-opacity=".35" stroke-dasharray="3 4"/>
+                <line x1="548" y1="304" x2="752" y2="304" stroke="#19c98c" stroke-opacity=".35" stroke-dasharray="3 4"/>
+                <g stroke="#f2ede3" stroke-opacity=".4">
+                  <line x1="570" y1="180" x2="570" y2="266"/><line x1="598" y1="204" x2="598" y2="292"/>
+                  <line x1="626" y1="166" x2="626" y2="250"/><line x1="654" y1="192" x2="654" y2="284"/>
+                  <line x1="710" y1="176" x2="710" y2="262"/><line x1="738" y1="206" x2="738" y2="298"/>
+                </g>
+                <g fill="#f2ede3" fill-opacity=".2">
+                  <rect x="564" y="196" width="12" height="54"/><rect x="592" y="220" width="12" height="58"/>
+                  <rect x="620" y="182" width="12" height="52"/><rect x="648" y="208" width="12" height="60"/>
+                  <rect x="704" y="192" width="12" height="56"/><rect x="732" y="222" width="12" height="60"/>
+                </g>
+                <line x1="682" y1="152" x2="682" y2="254" stroke="#19c98c"/>
+                <rect x="676" y="168" width="12" height="66" fill="#19c98c"/>
+                <text x="548" y="404" fill="#f2ede3" opacity=".3" font-family="monospace" font-size="9" letter-spacing="1.6">EUR / USD</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="deck__body wrk-reveal">
+            <p class="deck__eyebrow">
+              <span class="icon deck__eyebrow-icon icon--react" aria-hidden="true"></span>
+              2025 <span aria-hidden="true">&middot;</span> Trading tool
+            </p>
+            <h3 class="deck__title">FX Position<br />Size Calculator</h3>
+            <p class="deck__lead">Precision risk sizing for forex traders, in one glance.</p>
+            <ul class="deck__points">
+              <li>Turns account balance, risk percentage and stop distance into an exact lot size, so position sizing stops being mental arithmetic mid-trade.</li>
+              <li>Handles the pip-value maths across pairs and account currencies, including the cross-rate conversions traders usually get wrong.</li>
+              <li>Every input recalculates live, and the resulting risk amount sits next to the lot size so the trade-off is never hidden.</li>
+            </ul>
+            <p class="deck__stack-label">Built with</p>
+            <ul class="deck__stack">
+              <li>React</li><li>Next.js</li><li>TypeScript</li><li>Responsive UI</li>
+            </ul>
+            <div class="deck__actions">
+              <a class="btn btn--primary btn--sm btn--icon" href="https://wa.me/905528631208" target="_blank" rel="noopener"><span class="icon icon--whatsapp" aria-hidden="true"></span>Ask about it</a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/abtinabedi" target="_blank" rel="noopener">Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="deck deck--wide" id="fenbot">
+          <div class="deck__visual">
+            <div class="deck__glow" aria-hidden="true"></div>
+            <div class="deck__frame deck__frame--desktop">
+              <div class="deck__chrome" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <p class="deck__url">fenbot</p>
+              </div>
+              <svg class="schematic" viewBox="0 0 800 500" role="img" aria-label="Chat assistant: a list of past conversations beside an answer that cites its source">
+                <rect width="800" height="500" fill="#0d100e"/>
+
+                <rect x="0" y="0" width="210" height="500" fill="#f2ede3" opacity=".03"/>
+                <line x1="210" y1="0" x2="210" y2="500" stroke="#f2ede3" stroke-opacity=".1"/>
+                <circle cx="36" cy="38" r="7" fill="#19c98c"/>
+                <rect x="54" y="34" width="58" height="8" rx="4" fill="#f2ede3" opacity=".5"/>
+                <rect x="20" y="70" width="170" height="30" rx="5" fill="none" stroke="#f2ede3" stroke-opacity=".16"/>
+                <rect x="36" y="81" width="96" height="7" rx="3.5" fill="#f2ede3" opacity=".22"/>
+                <rect x="20" y="122" width="170" height="42" rx="5" fill="#19c98c" opacity=".12"/>
+                <rect x="20" y="122" width="3" height="42" rx="1.5" fill="#19c98c"/>
+                <rect x="40" y="134" width="118" height="7" rx="3.5" fill="#19c98c" opacity=".65"/>
+                <rect x="40" y="148" width="82" height="6" rx="3" fill="#19c98c" opacity=".35"/>
+                <g fill="#f2ede3" fill-opacity=".16">
+                  <rect x="40" y="186" width="126" height="7" rx="3.5"/><rect x="40" y="200" width="74" height="6" rx="3"/>
+                  <rect x="40" y="234" width="110" height="7" rx="3.5"/><rect x="40" y="248" width="90" height="6" rx="3"/>
+                  <rect x="40" y="282" width="132" height="7" rx="3.5"/><rect x="40" y="296" width="66" height="6" rx="3"/>
+                </g>
+
+                <line x1="210" y1="70" x2="800" y2="70" stroke="#f2ede3" stroke-opacity=".1"/>
+                <text x="242" y="44" fill="#f2ede3" opacity=".75" font-family="monospace" font-size="11" letter-spacing="3">FENBOT</text>
+                <text x="768" y="44" text-anchor="end" fill="#19c98c" opacity=".6" font-family="monospace" font-size="9" letter-spacing="1.5">ONLINE</text>
+
+                <rect x="510" y="100" width="258" height="48" rx="12" fill="#f2ede3" opacity=".08"/>
+                <rect x="532" y="116" width="214" height="7" rx="3.5" fill="#f2ede3" opacity=".3"/>
+                <rect x="532" y="130" width="140" height="7" rx="3.5" fill="#f2ede3" opacity=".3"/>
+
+                <rect x="242" y="170" width="330" height="128" rx="12" fill="#19c98c" opacity=".12"/>
+                <rect x="242.5" y="170.5" width="329" height="127" rx="12" fill="none" stroke="#19c98c" stroke-opacity=".32"/>
+                <rect x="266" y="192" width="282" height="7" rx="3.5" fill="#19c98c" opacity=".55"/>
+                <rect x="266" y="208" width="256" height="7" rx="3.5" fill="#19c98c" opacity=".4"/>
+                <rect x="266" y="224" width="274" height="7" rx="3.5" fill="#19c98c" opacity=".4"/>
+                <rect x="266" y="240" width="168" height="7" rx="3.5" fill="#19c98c" opacity=".4"/>
+                <line x1="266" y1="260" x2="548" y2="260" stroke="#19c98c" stroke-opacity=".25"/>
+                <text x="266" y="282" fill="#19c98c" opacity=".7" font-family="monospace" font-size="9" letter-spacing="1.4">SOURCE / REGULATIONS 4.2</text>
+
+                <rect x="558" y="320" width="210" height="42" rx="12" fill="#f2ede3" opacity=".08"/>
+                <rect x="580" y="336" width="166" height="7" rx="3.5" fill="#f2ede3" opacity=".3"/>
+
+                <rect x="242" y="382" width="128" height="40" rx="12" fill="#19c98c" opacity=".12"/>
+                <rect x="242.5" y="382.5" width="127" height="39" rx="12" fill="none" stroke="#19c98c" stroke-opacity=".32"/>
+                <circle cx="280" cy="402" r="4" fill="#19c98c" opacity=".85"/>
+                <circle cx="306" cy="402" r="4" fill="#19c98c" opacity=".5"/>
+                <circle cx="332" cy="402" r="4" fill="#19c98c" opacity=".28"/>
+
+                <line x1="210" y1="444" x2="800" y2="444" stroke="#f2ede3" stroke-opacity=".1"/>
+                <rect x="242" y="462" width="470" height="30" rx="15" fill="#f2ede3" opacity=".06"/>
+                <rect x="264" y="474" width="140" height="7" rx="3.5" fill="#f2ede3" opacity=".22"/>
+                <circle cx="748" cy="477" r="16" fill="#19c98c"/>
+                <path d="M742 477h12m-4.5-4.5 4.5 4.5-4.5 4.5" stroke="#0a0b0a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="deck__body wrk-reveal">
+            <p class="deck__eyebrow">
+              <span class="icon deck__eyebrow-icon icon--react" aria-hidden="true"></span>
+              2025 <span aria-hidden="true">&middot;</span> AI assistant
+            </p>
+            <h3 class="deck__title">FenBot</h3>
+            <p class="deck__lead">An AI chatbot that answers a whole university's questions.</p>
+            <ul class="deck__points">
+              <li>Answers the questions a campus asks a hundred times a week — deadlines, regulations, procedures — without anyone waiting on an office to open.</li>
+              <li>Replies are grounded in the institution's own documents rather than the model's memory, so an answer can always be traced back to a source.</li>
+              <li>Conversational follow-ups keep context, so a student can narrow a question down instead of restating it from scratch.</li>
+            </ul>
+            <p class="deck__stack-label">Built with</p>
+            <ul class="deck__stack">
+              <li>Next.js</li><li>React</li><li>LLM API</li><li>Retrieval</li>
+            </ul>
+            <div class="deck__actions">
+              <a class="btn btn--primary btn--sm btn--icon" href="https://wa.me/905528631208" target="_blank" rel="noopener"><span class="icon icon--whatsapp" aria-hidden="true"></span>Ask about it</a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/abtinabedi" target="_blank" rel="noopener">Source</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ============ MOBILE APP (FLUTTER) =========================== -->
+      <section class="cat" id="cat-flutter" aria-labelledby="cat-flutter-title">
+        <header class="cat__head">
+          <span class="icon cat__icon icon--mobile" aria-hidden="true"></span>
+          <h2 class="cat__title" id="cat-flutter-title">Mobile App <em>(Flutter)</em></h2>
+          <p class="cat__count"><span>01</span> project</p>
+        </header>
+
+        <article class="deck" id="lifeboard">
+          <div class="deck__visual">
+            <div class="deck__glow" aria-hidden="true"></div>
+            <div class="deck__frame deck__frame--mobile">
+              <svg class="schematic" viewBox="0 0 360 640" role="img" aria-label="Productivity board: three task columns above a habit streak strip and project progress bars">
+                <rect width="360" height="640" fill="#0d100e"/>
+                <text x="24" y="50" fill="#f2ede3" opacity=".8" font-family="monospace" font-size="11" letter-spacing="3">LIFEBOARD</text>
+                <text x="336" y="50" text-anchor="end" fill="#19c98c" opacity=".65" font-family="monospace" font-size="9" letter-spacing="1.5">THIS WEEK</text>
+                <line x1="0" y1="72" x2="360" y2="72" stroke="#f2ede3" stroke-opacity=".1"/>
+
+                <g>
+                  <text x="24" y="104" fill="#f2ede3" opacity=".4" font-family="monospace" font-size="9" letter-spacing="1.6">TODO</text>
+                  <rect x="24" y="116" width="96" height="58" rx="8" fill="#f2ede3" opacity=".06"/>
+                  <rect x="24" y="116" width="3" height="58" rx="1.5" fill="#f2ede3" opacity=".28"/>
+                  <rect x="38" y="132" width="66" height="5" rx="2.5" fill="#f2ede3" opacity=".32"/>
+                  <rect x="38" y="144" width="44" height="5" rx="2.5" fill="#f2ede3" opacity=".2"/>
+                  <rect x="38" y="158" width="26" height="8" rx="4" fill="#f2ede3" opacity=".14"/>
+                  <rect x="24" y="184" width="96" height="46" rx="8" fill="#f2ede3" opacity=".06"/>
+                  <rect x="24" y="184" width="3" height="46" rx="1.5" fill="#f2ede3" opacity=".28"/>
+                  <rect x="38" y="200" width="58" height="5" rx="2.5" fill="#f2ede3" opacity=".32"/>
+                  <rect x="38" y="212" width="36" height="5" rx="2.5" fill="#f2ede3" opacity=".2"/>
+                </g>
+
+                <g>
+                  <text x="132" y="104" fill="#19c98c" opacity=".75" font-family="monospace" font-size="9" letter-spacing="1.6">DOING</text>
+                  <rect x="132" y="116" width="96" height="74" rx="8" fill="#19c98c" opacity=".12"/>
+                  <rect x="132.5" y="116.5" width="95" height="73" rx="8" fill="none" stroke="#19c98c" stroke-opacity=".35"/>
+                  <rect x="132" y="116" width="3" height="74" rx="1.5" fill="#19c98c"/>
+                  <rect x="146" y="132" width="68" height="5" rx="2.5" fill="#19c98c" opacity=".6"/>
+                  <rect x="146" y="144" width="50" height="5" rx="2.5" fill="#19c98c" opacity=".38"/>
+                  <rect x="146" y="156" width="60" height="5" rx="2.5" fill="#19c98c" opacity=".38"/>
+                  <rect x="146" y="172" width="30" height="8" rx="4" fill="#19c98c" opacity=".3"/>
+                  <rect x="132" y="200" width="96" height="46" rx="8" fill="#f2ede3" opacity=".06"/>
+                  <rect x="132" y="200" width="3" height="46" rx="1.5" fill="#f2ede3" opacity=".28"/>
+                  <rect x="146" y="216" width="54" height="5" rx="2.5" fill="#f2ede3" opacity=".32"/>
+                  <rect x="146" y="228" width="40" height="5" rx="2.5" fill="#f2ede3" opacity=".2"/>
+                </g>
+
+                <g>
+                  <text x="240" y="104" fill="#f2ede3" opacity=".4" font-family="monospace" font-size="9" letter-spacing="1.6">DONE</text>
+                  <rect x="240" y="116" width="96" height="46" rx="8" fill="#f2ede3" opacity=".04"/>
+                  <rect x="240" y="116" width="3" height="46" rx="1.5" fill="#f2ede3" opacity=".18"/>
+                  <path d="M254 138l6 6 12-13" stroke="#19c98c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="280" y="136" width="42" height="5" rx="2.5" fill="#f2ede3" opacity=".18"/>
+                  <rect x="240" y="172" width="96" height="46" rx="8" fill="#f2ede3" opacity=".04"/>
+                  <rect x="240" y="172" width="3" height="46" rx="1.5" fill="#f2ede3" opacity=".18"/>
+                  <path d="M254 194l6 6 12-13" stroke="#19c98c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="280" y="192" width="36" height="5" rx="2.5" fill="#f2ede3" opacity=".18"/>
+                </g>
+
+                <line x1="24" y1="286" x2="336" y2="286" stroke="#f2ede3" stroke-opacity=".1"/>
+                <text x="24" y="318" fill="#f2ede3" opacity=".4" font-family="monospace" font-size="9" letter-spacing="1.6">HABITS</text>
+                <text x="336" y="318" text-anchor="end" fill="#19c98c" font-family="monospace" font-size="9" letter-spacing="1.4">14 DAY STREAK</text>
+
+                <g fill="#19c98c">
+                  <rect x="24" y="340" width="18" height="18" rx="3" opacity=".85"/><rect x="48" y="340" width="18" height="18" rx="3" opacity=".7"/>
+                  <rect x="72" y="340" width="18" height="18" rx="3" opacity=".9"/><rect x="96" y="340" width="18" height="18" rx="3" opacity=".5"/>
+                  <rect x="120" y="340" width="18" height="18" rx="3" opacity=".8"/><rect x="144" y="340" width="18" height="18" rx="3" opacity=".65"/>
+                  <rect x="168" y="340" width="18" height="18" rx="3" opacity=".95"/>
+                </g>
+                <g fill="#f2ede3" fill-opacity=".1">
+                  <rect x="192" y="340" width="18" height="18" rx="3"/><rect x="216" y="340" width="18" height="18" rx="3"/>
+                  <rect x="240" y="340" width="18" height="18" rx="3"/><rect x="264" y="340" width="18" height="18" rx="3"/>
+                  <rect x="288" y="340" width="18" height="18" rx="3"/><rect x="312" y="340" width="18" height="18" rx="3"/>
+                </g>
+                <g fill="#19c98c" fill-opacity=".55">
+                  <rect x="24" y="366" width="18" height="18" rx="3"/><rect x="48" y="366" width="18" height="18" rx="3"/>
+                  <rect x="72" y="366" width="18" height="18" rx="3"/>
+                </g>
+                <g fill="#f2ede3" fill-opacity=".1">
+                  <rect x="96" y="366" width="18" height="18" rx="3"/><rect x="120" y="366" width="18" height="18" rx="3"/>
+                  <rect x="144" y="366" width="18" height="18" rx="3"/><rect x="168" y="366" width="18" height="18" rx="3"/>
+                  <rect x="192" y="366" width="18" height="18" rx="3"/><rect x="216" y="366" width="18" height="18" rx="3"/>
+                  <rect x="240" y="366" width="18" height="18" rx="3"/><rect x="264" y="366" width="18" height="18" rx="3"/>
+                  <rect x="288" y="366" width="18" height="18" rx="3"/><rect x="312" y="366" width="18" height="18" rx="3"/>
+                </g>
+
+                <line x1="24" y1="418" x2="336" y2="418" stroke="#f2ede3" stroke-opacity=".1"/>
+                <text x="24" y="450" fill="#f2ede3" opacity=".4" font-family="monospace" font-size="9" letter-spacing="1.6">PROJECTS</text>
+                <rect x="24" y="466" width="312" height="52" rx="8" fill="#f2ede3" opacity=".05"/>
+                <rect x="44" y="486" width="96" height="6" rx="3" fill="#f2ede3" opacity=".3"/>
+                <rect x="44" y="500" width="60" height="5" rx="2.5" fill="#f2ede3" opacity=".18"/>
+                <rect x="212" y="490" width="104" height="6" rx="3" fill="#f2ede3" opacity=".1"/>
+                <rect x="212" y="490" width="68" height="6" rx="3" fill="#19c98c" opacity=".8"/>
+
+                <rect x="24" y="534" width="312" height="52" rx="8" fill="#f2ede3" opacity=".05"/>
+                <rect x="44" y="554" width="76" height="6" rx="3" fill="#f2ede3" opacity=".3"/>
+                <rect x="44" y="568" width="52" height="5" rx="2.5" fill="#f2ede3" opacity=".18"/>
+                <rect x="212" y="558" width="104" height="6" rx="3" fill="#f2ede3" opacity=".1"/>
+                <rect x="212" y="558" width="34" height="6" rx="3" fill="#19c98c" opacity=".8"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="deck__body wrk-reveal">
+            <p class="deck__eyebrow">
+              <span class="icon deck__eyebrow-icon icon--mobile" aria-hidden="true"></span>
+              2026 <span aria-hidden="true">&middot;</span> Productivity app
+            </p>
+            <h3 class="deck__title">Lifeboard</h3>
+            <p class="deck__lead">One board for projects, habits and everything life throws at you.</p>
+            <ul class="deck__points">
+              <li>Projects, tasks and habits live on a single board instead of scattered across three apps that never agree with each other.</li>
+              <li>Habits are tracked as streaks next to the work they support, so consistency is visible rather than something you have to remember.</li>
+              <li>Progress rolls up per project, which turns a long backlog into a readable picture of what is actually moving.</li>
+            </ul>
+            <p class="deck__stack-label">Built with</p>
+            <ul class="deck__stack">
+              <li>Flutter</li><li>Dart</li><li>Local-first</li><li>iOS &amp; Android</li>
+            </ul>
+            <div class="deck__actions">
+              <a class="btn btn--primary btn--sm btn--icon" href="https://wa.me/905528631208" target="_blank" rel="noopener"><span class="icon icon--whatsapp" aria-hidden="true"></span>Ask about it</a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/abtinabedi" target="_blank" rel="noopener">Source</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="wrk__outro" aria-label="Contact">
+        <h2 class="wrk__outro-title">Something here<br />look like your problem?</h2>
+        <div class="wrk__outro-actions">
+          <a class="btn btn--primary btn--icon" href="https://wa.me/905528631208?text=Hi%20Abtin%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener">
+            <span class="icon icon--whatsapp" aria-hidden="true"></span>
+            Message on WhatsApp
+          </a>
+          <a class="btn btn--ghost" href="/#contact">Other ways to reach me</a>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p class="footer__copy">&copy; 2026 Abtin Abedi</p>
+    <nav class="footer__links" aria-label="Profiles">
+      <a href="/">Home</a>
+      <a href="https://wa.me/905528631208" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://github.com/abtinabedi" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/abtinabedi/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:apten1370@gmail.com">Email</a>
+    </nav>
+  </footer>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <script src="vendor/lenis.min.js"></script>
+  <script src="js/works.js"></script>
+  <script src="js/cursor.js"></script>
+</body>
+</html>

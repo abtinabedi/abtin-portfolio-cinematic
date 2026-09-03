@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Abtin Abedi</title>
   <meta name="description" content="Abtin Abedi, software developer. Cinematic websites, e-commerce and apps." />
+  <link rel="canonical" href="https://abtin.works/" />
+  <meta property="og:title" content="Abtin Abedi — Software Developer" />
+  <meta property="og:description" content="Abtin Abedi, software developer. Cinematic websites, e-commerce and apps." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://abtin.works/" />
+  <meta property="og:site_name" content="Abtin Abedi" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2319C98C'/%3E%3Ctext x='16' y='23' font-family='Arial Black,Arial' font-size='19' font-weight='900' text-anchor='middle' fill='%230A0B0A'%3EA%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="css/main.css" />
 </head>
@@ -19,7 +26,13 @@
     <a class="nav__mark" href="#top" aria-label="Abtin Abedi, back to top">AA</a>
     <nav class="nav__links" aria-label="Primary">
       <a href="#work">Work</a>
+      <a href="/works">Projects</a>
       <a href="#contact">Contact</a>
+      <a class="nav__cv" href="assets/cv/abtin-abedi-cv.pdf" download="Abtin-Abedi-CV.pdf">
+        <span class="icon icon--download" aria-hidden="true"></span>
+        <span class="nav__cv-full">Download CV</span>
+        <span class="nav__cv-short" aria-hidden="true">CV</span>
+      </a>
     </nav>
   </header>
 
@@ -88,7 +101,7 @@
         <h2 class="work__heading reveal">SELECTED<br />WORK</h2>
         <div class="work__list">
           <article class="project reveal">
-            <a class="project__link" href="#contact">
+            <a class="project__link" href="/works#fx-calculator">
               <span class="project__meta">Trading tool</span>
               <h3 class="project__title">FX POSITION SIZE CALCULATOR</h3>
               <p class="project__pitch">Precision risk sizing for forex traders, in one glance.</p>
@@ -96,7 +109,7 @@
             </a>
           </article>
           <article class="project reveal">
-            <a class="project__link" href="#contact">
+            <a class="project__link" href="/works#fenbot">
               <span class="project__meta">AI assistant</span>
               <h3 class="project__title">FENBOT</h3>
               <p class="project__pitch">An AI chatbot that answers a whole university's questions.</p>
@@ -104,13 +117,22 @@
             </a>
           </article>
           <article class="project reveal">
-            <a class="project__link" href="#contact">
+            <a class="project__link" href="/works#lifeboard">
               <span class="project__meta">Productivity app</span>
               <h3 class="project__title">LIFEBOARD</h3>
               <p class="project__pitch">One board for projects, habits and everything life throws at you.</p>
               <span class="project__arrow" aria-hidden="true">&rarr;</span>
             </a>
           </article>
+        </div>
+
+        <div class="work__all-tilt reveal">
+          <a class="work__all" href="/works">
+            <span class="work__all-label">All projects</span>
+            <span class="work__all-title">SEE THE FULL DECK</span>
+            <span class="work__all-meta">Every project, grouped by what it is built with</span>
+            <span class="work__all-arrow" aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </div>
     </section>
@@ -119,9 +141,40 @@
     <section class="finale" id="contact" aria-label="Contact">
       <h2 class="finale__title"><span class="finale__word reveal" style="--d:0">LET'S</span><span class="finale__word reveal" style="--d:1">BUILD</span><span class="finale__word reveal" style="--d:2">SOMETHING</span><span class="finale__word finale__word--accent reveal" style="--d:3">GREAT.</span></h2>
       <div class="finale__actions reveal" style="--d:4">
-        <a class="btn btn--primary" href="mailto:apten1370@gmail.com">Start a project</a>
+        <a class="btn btn--primary btn--icon" href="https://wa.me/905528631208?text=Hi%20Abtin%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener">
+          <span class="icon icon--whatsapp" aria-hidden="true"></span>
+          Message on WhatsApp
+        </a>
         <a class="btn btn--ghost" href="#work">See the work</a>
       </div>
+
+      <!-- every way to reach me, in the order I answer fastest -->
+      <ul class="channels reveal" style="--d:5">
+        <li class="channel">
+          <a class="channel__link" href="https://wa.me/905528631208" target="_blank" rel="noopener">
+            <span class="icon icon--whatsapp channel__icon" aria-hidden="true"></span>
+            <span class="channel__label">WhatsApp</span>
+            <span class="channel__value">+90 552 863 12 08</span>
+            <span class="channel__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="channel">
+          <a class="channel__link" href="tel:+905521803308">
+            <span class="icon icon--phone channel__icon" aria-hidden="true"></span>
+            <span class="channel__label">Phone</span>
+            <span class="channel__value">+90 552 180 33 08</span>
+            <span class="channel__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+        <li class="channel">
+          <a class="channel__link" href="mailto:apten1370@gmail.com">
+            <span class="icon icon--mail channel__icon" aria-hidden="true"></span>
+            <span class="channel__label">Email</span>
+            <span class="channel__value">apten1370@gmail.com</span>
+            <span class="channel__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+      </ul>
     </section>
 
   </main>
@@ -129,6 +182,7 @@
   <footer class="footer">
     <p class="footer__copy">&copy; 2026 Abtin Abedi</p>
     <nav class="footer__links" aria-label="Profiles">
+      <a href="https://wa.me/905528631208" target="_blank" rel="noopener">WhatsApp</a>
       <a href="https://github.com/abtinabedi" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/abtinabedi/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="mailto:apten1370@gmail.com">Email</a>
@@ -139,5 +193,6 @@
 
   <script src="vendor/lenis.min.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/cursor.js"></script>
 </body>
 </html>

@@ -19,25 +19,44 @@ const MIME = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".svg": "image/svg+xml",
+  ".pdf": "application/pdf",
   ".mp4": "video/mp4",
   ".woff2": "font/woff2",
   ".ico": "image/x-icon",
 };
 
 createServer((req, res) => {
-  let path = decodeURIComponent(new URL(req.url, "http://x").pathname);
-  if (path === "/") path = "/index.html";
-  const file = normalize(join(root, path));
+  const path = decodeURIComponent(new URL(req.url, "http://x").pathname);
+  let file = normalize(join(root, path === "/" ? "/index.html" : path));
   if (!file.startsWith(root)) {
     res.writeHead(403).end();
     return;
   }
 
-  let st;
+  let st = null;
   try {
-    st = statSync(file);
-    if (st.isDirectory()) throw new Error("dir");
-  } catch {
+    const found = statSync(file);
+    if (!found.isDirectory()) st = found;
+  } catch {}
+
+  // pretty URLs, same rule as server.mjs: /works -> works.html
+  if (!st) {
+    const bare = path.replace(/\/+$/, "");
+    if (bare && !extname(bare)) {
+      const alt = normalize(join(root, bare + ".html"));
+      if (alt.startsWith(root)) {
+        try {
+          const found = statSync(alt);
+          if (found.isFile()) {
+            file = alt;
+            st = found;
+          }
+        } catch {}
+      }
+    }
+  }
+
+  if (!st) {
     res.writeHead(404).end("not found");
     return;
   }

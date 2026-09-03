@@ -65,6 +65,40 @@ canvas {
   display: block;
 }
 
+/* ---------- icons ----------
+   Single-colour SVGs painted through a mask, so one file covers every size and
+   state and picks up currentColor. A modifier only sets --icon. */
+
+.icon {
+  display: inline-block;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.icon--whatsapp {
+  --icon: url("../assets/icons/whatsapp.svg");
+}
+
+.icon--phone {
+  --icon: url("../assets/icons/phone.svg");
+}
+
+.icon--mail {
+  --icon: url("../assets/icons/mail.svg");
+}
+
+.icon--download {
+  --icon: url("../assets/icons/download.svg");
+}
+
 /* ---------- preloader ---------- */
 
 .preloader {
@@ -135,6 +169,45 @@ body.is-loaded .preloader {
 
 .nav__links a:hover {
   color: var(--emerald);
+}
+
+/* ---------- CV button ----------
+   Solid, so it reads as the one action in the bar rather than a fourth link.
+   Below 640px the label drops to "CV": the full wording plus three nav links
+   will not fit a phone, and losing a nav item would cost more than the word. */
+
+.nav__cv,
+.wnav__links .nav__cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.52rem 1rem;
+  border: 1px solid var(--emerald);
+  border-radius: 999px;
+  background: var(--emerald);
+  color: var(--ink);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s var(--ease);
+}
+
+.nav__cv .icon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.nav__cv:hover,
+.nav__cv:focus-visible {
+  background: transparent;
+  color: var(--emerald);
+  transform: translateY(-1px);
+}
+
+.nav__cv-short {
+  display: none;
 }
 
 /* ---------- hero ---------- */
@@ -486,6 +559,140 @@ body.is-ready .ltr {
   transform: translateX(0);
 }
 
+/* the work list hands off to the full project deck ----------------------
+   Two React Bits components, ported to what this site actually is:
+
+   <TiltedCard />            the pointer tilt. The spring model is kept
+                             (stiffness 100, damping 30, mass 2) but it runs in
+                             main.js off the existing rAF loop instead of
+                             `motion`. Amplitude and scale are far below the
+                             component defaults: 14deg and 1.1x read fine on a
+                             300px square and break apart on a full-width banner.
+
+   <BorderRotate />          the rotating gradient border. This one needs no JS
+                             at all -- an @property angle driving a conic
+                             gradient, clipped to the border box. Colours are the
+                             site's: deep emerald into brand emerald, with cream
+                             as the glint. */
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes gradient-rotate {
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+/* the perspective has to sit on a parent, or the card's own rotation is flat */
+.work__all-tilt {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  perspective: 1100px;
+}
+
+.work__all {
+  /* Also declared plainly, so that browsers without @property still resolve
+     the var() below. Without it the whole background-image declaration is
+     invalid and the card loses its background as well as its border. The
+     keyframes still win over this value where @property is supported. */
+  --gradient-angle: 0deg;
+  --border-width: 2px;
+  --card-bg: #0d100e;
+  --glint-deep: #0d4f38;
+  --glint-mid: #19c98c;
+  --glint-hot: #f2ede3;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "label arrow"
+    "title arrow"
+    "meta  arrow";
+  align-items: center;
+  gap: 0.4rem 2rem;
+  padding: clamp(2rem, 5vh, 3.4rem) clamp(1.4rem, 3vw, 2.6rem);
+
+  /* the border is transparent so the second background layer shows through it;
+     the first layer covers the padding box and hides the gradient behind it */
+  border: var(--border-width) solid transparent;
+  border-radius: 6px;
+  background-color: var(--card-bg); /* last resort if the gradients are dropped */
+  background-image:
+    linear-gradient(var(--card-bg), var(--card-bg)),
+    conic-gradient(
+      from var(--gradient-angle),
+      var(--glint-deep) 0%,
+      var(--glint-mid) 27%,
+      var(--glint-hot) 30%,
+      var(--glint-mid) 33%,
+      var(--glint-deep) 40%,
+      var(--glint-deep) 50%,
+      var(--glint-mid) 77%,
+      var(--glint-hot) 80%,
+      var(--glint-mid) 83%,
+      var(--glint-deep) 90%
+    );
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* the gradient re-rasterises every frame it turns, so only spin it on screen */
+.work__all.is-spinning {
+  animation: gradient-rotate 6s linear infinite;
+}
+
+.work__all-label {
+  grid-area: label;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--emerald);
+}
+
+.work__all-title {
+  grid-area: title;
+  font-family: var(--display);
+  font-size: clamp(2rem, 5.6vw, 4.4rem);
+  line-height: 1;
+  color: var(--cream);
+  transform: translateZ(20px);
+  transition: color 0.4s var(--ease);
+}
+
+.work__all-meta {
+  grid-area: meta;
+  margin-top: 0.35rem;
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  color: var(--cream-dim);
+  max-width: 46ch;
+}
+
+.work__all-arrow {
+  grid-area: arrow;
+  font-size: clamp(1.8rem, 3.4vw, 3rem);
+  line-height: 1;
+  color: var(--emerald);
+  transform: translateZ(34px);
+  transition: transform 0.5s var(--ease);
+}
+
+.work__all:hover .work__all-title,
+.work__all:focus-visible .work__all-title {
+  color: var(--emerald);
+}
+
+.work__all:hover .work__all-arrow,
+.work__all:focus-visible .work__all-arrow {
+  transform: translateZ(34px) translateX(clamp(6px, 1.4vw, 16px));
+}
+
 /* ---------- finale ---------- */
 
 .finale {
@@ -544,6 +751,17 @@ body.is-ready .ltr {
   transform: scale(0.98);
 }
 
+.btn--icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn--icon .icon {
+  width: 1.05em;
+  height: 1.05em;
+}
+
 .btn--primary {
   background: var(--emerald);
   color: var(--ink);
@@ -561,6 +779,81 @@ body.is-ready .ltr {
 .btn--ghost:hover {
   border-color: var(--emerald);
   color: var(--emerald);
+}
+
+/* ---------- contact channels ----------
+   Same hairline rows as the work list, so the section reads as one page rather
+   than a button cluster bolted onto a heading. The number is real text, which
+   matters more than it looks: it can be read, copied and dialled by hand when
+   the link handler is missing. */
+
+.channels {
+  list-style: none;
+  margin-top: clamp(2.5rem, 7vh, 4rem);
+  max-width: 620px;
+  border-top: 1px solid var(--hairline);
+}
+
+.channel {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.channel__link {
+  display: grid;
+  grid-template-columns: auto minmax(5.5rem, auto) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem 0.25rem;
+  transition: padding 0.4s var(--ease);
+}
+
+.channel__icon {
+  width: 17px;
+  height: 17px;
+  color: var(--cream-dim);
+  transition: color 0.3s ease;
+}
+
+.channel__label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+}
+
+.channel__value {
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  transition: color 0.3s ease;
+}
+
+.channel__arrow {
+  font-size: 1.1rem;
+  color: var(--emerald);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.35s ease, transform 0.45s var(--ease);
+}
+
+.channel__link:hover,
+.channel__link:focus-visible {
+  padding-left: 0.9rem;
+}
+
+.channel__link:hover .channel__icon,
+.channel__link:focus-visible .channel__icon,
+.channel__link:hover .channel__value,
+.channel__link:focus-visible .channel__value {
+  color: var(--emerald);
+}
+
+.channel__link:hover .channel__arrow,
+.channel__link:focus-visible .channel__arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* ---------- footer ---------- */
@@ -612,6 +905,27 @@ body.is-ready .ltr {
   transform: translateY(0);
 }
 
+/* ---------- glow cursor ----------
+   js/cursor.js appends the canvas, so nothing is painted when the script
+   never runs. It sits above the nav and grain but under the preloader. */
+
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 96;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
 /* ---------- grain ---------- */
 
 .grain {
@@ -646,7 +960,21 @@ body.is-ready .ltr {
 
 @media (max-width: 640px) {
   .nav__links {
-    gap: 1.2rem;
+    gap: 0.9rem;
+    font-size: 0.95em;
+  }
+
+  .nav__cv {
+    padding: 0.45rem 0.8rem;
+    letter-spacing: 0.06em;
+  }
+
+  .nav__cv-full {
+    display: none;
+  }
+
+  .nav__cv-short {
+    display: inline;
   }
 
   .project__link {
@@ -656,9 +984,55 @@ body.is-ready .ltr {
       "pitch arrow";
   }
 
+  .work__all {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "label"
+      "title"
+      "meta"
+      "arrow";
+  }
+
+  .work__all-arrow {
+    margin-top: 0.8rem;
+  }
+
+  .work__all:hover .work__all-arrow,
+  .work__all:focus-visible .work__all-arrow {
+    transform: translateZ(34px) translateX(8px);
+  }
+
   .finale__actions .btn {
     width: 100%;
     text-align: center;
+  }
+
+  .finale__actions .btn--icon {
+    justify-content: center;
+  }
+
+  .channel__link {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon label arrow"
+      "icon value arrow";
+    gap: 0.15rem 0.9rem;
+  }
+
+  .channel__icon {
+    grid-area: icon;
+  }
+
+  .channel__label {
+    grid-area: label;
+  }
+
+  .channel__value {
+    grid-area: value;
+  }
+
+  .channel__arrow {
+    grid-area: arrow;
   }
 }
 
@@ -671,6 +1045,36 @@ body.is-ready .ltr {
 
   body.is-ready .ltr {
     animation: none;
+  }
+
+  .work__all.is-spinning {
+    animation: none;
+  }
+
+  .channel__link,
+  .channel__arrow {
+    transition: none;
+  }
+
+  .nav__cv:hover,
+  .nav__cv:focus-visible {
+    transform: none;
+  }
+
+  .channel__link:hover,
+  .channel__link:focus-visible {
+    padding-left: 0.25rem;
+  }
+
+  .work__all-title,
+  .work__all-arrow {
+    transform: none;
+    transition: none;
+  }
+
+  .work__all:hover .work__all-arrow,
+  .work__all:focus-visible .work__all-arrow {
+    transform: none;
   }
 
   .reveal,

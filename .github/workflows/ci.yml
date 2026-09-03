@@ -1,0 +1,35 @@
+name: CI
+
+# Netlify owns deployment: it builds from this repo on every push to main and
+# runs `node scripts/healthcheck.mjs` as its build command, so a broken commit
+# never becomes a live site.
+#
+# This workflow exists to run the same gate on pull requests and to give a
+# green/red tick on the commit itself, before Netlify picks it up.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The site has zero runtime dependencies, so nothing is installed here.
+      # healthcheck.mjs uses Node builtins only.
+      - name: Health check
+        run: node scripts/healthcheck.mjs

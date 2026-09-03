@@ -1,207 +1,141 @@
 # CI/CD: automatic deploy on push
 
-Goal: you `git push`, and 60 seconds later the live site is updated. You never run
-rsync or pm2 by hand again.
+Goal: you `git push`, and a minute later the live site is updated. You never run
+rsync or pm2 by hand.
 
 ---
 
-## 1. The idea
+## 1. The shape of it
 
-**CI (Continuous Integration)** = every time you push code, a machine automatically
-checks it is not broken.
-
-**CD (Continuous Deployment)** = if those checks pass, that same machine ships it
-to production.
+**CI (Continuous Integration)** = every push is checked by a machine before anyone
+sees it. **CD (Continuous Deployment)** = if the checks pass, that same machine
+ships it.
 
 The important word is **gate**. Deployment only happens if verification passed. A
-pipeline without a gate is just a slower way to break your site.
-
-Our pipeline has two jobs:
+pipeline without a gate is just a faster way to break your site.
 
 ```
    you: git push origin main
             |
-            v
-   [ job 1: verify ]  <- runs on a GitHub machine, touches nothing of yours
-            |             - do all referenced files exist?
-            |             - does the frame sequence have gaps?
-            |             - does server.mjs boot and serve?
-            |
-        passed? --no--> STOP. Server untouched. You get an email.
-            |
-           yes
-            |
-            v
-   [ job 2: deploy ]  <- SSH into your server
-            |             - rsync the files
-            |             - pm2 reload (drains in-flight requests)
-            |             - curl the live URL to confirm 200
-            v
-      live site updated
+            +---------------------------+
+            |                           |
+            v                           v
+   [ GitHub Actions: CI ]      [ Netlify: build + deploy ]
+     .github/workflows/ci.yml    netlify.toml
+            |                           |
+   node scripts/healthcheck.mjs   build command is the SAME
+            |                     healthcheck. Fails -> nothing
+            |                     is published, the previous
+            v                     deploy stays live.
+     green/red tick on                 |
+     the commit and on PRs             v
+                                 live site updated
 ```
 
-Job 2 declares `needs: verify`. That one line is the gate.
+Two runners, one gate, deliberately. GitHub Actions gives you the tick on the
+commit and on pull requests. Netlify runs the same script as its **build command**,
+which is what actually blocks a bad commit from going live — a green tick that does
+not stop a deploy is decoration.
 
 ---
 
-## 2. Why an SSH *deploy key*, not your password
+## 2. What the gate actually checks
 
-GitHub's machine needs to log into your server. Two rules:
+`scripts/healthcheck.mjs` — pure Node builtins, no dependencies, so it runs
+anywhere in seconds:
 
-- **Never put a password in CI.** It cannot be scoped or revoked cleanly.
-- **Do not reuse your personal SSH key.** If GitHub is ever compromised, you want to
-  revoke *one* key used for *one* purpose, not the key you use for everything.
+- every local file referenced by `index.html`, `works.html`, `404.html` and the
+  stylesheets exists, resolved the way the site serves it (`/works` → `works.html`)
+- `404.html` references everything root-relative, since it is served under
+  arbitrary URLs and a relative path there would resolve against the missing path
+- the CV the nav offers is actually in the repo
+- the hero frame manifest count matches the files on disk, with no gaps in the
+  sequence (a gap freezes the scroll scrub)
+- `server.mjs` boots and serves every critical path, returns the styled 404 for an
+  unknown path, and 403s dotfiles
+- the project index rail and the decks on `works.html` agree in both directions
+- every icon class has a rule naming its file, and every icon span carries the
+  `.icon` base class
+- the home page does not link to a deck that is not there
 
-So we generate a dedicated keypair:
+Run it yourself any time:
 
-- the **public** key goes on your server, in `~/.ssh/authorized_keys` (safe to share)
-- the **private** key goes into GitHub Secrets (never shown, never committed)
-
-Secrets are encrypted, hidden from logs, and unavailable to pull requests from forks.
+```bash
+node scripts/healthcheck.mjs
+```
 
 ---
 
-## 3. Setup
+## 3. Netlify setup
 
-### 3a. Generate the deploy key
+One-time, in the Netlify UI: **Add new site → Import an existing project → GitHub →
+this repo**. Do not fill in the build settings by hand; `netlify.toml` declares
+them, and a value typed into the dashboard silently overrides the file.
 
-On your Mac:
+Everything else — publish directory, build command, Node version, cache headers,
+security headers, redirects — lives in `netlify.toml`, in the repo, reviewable in a
+diff. See `DEPLOY.md` for the table.
 
-```bash
-ssh-keygen -t ed25519 -f ~/.ssh/abtin_portfolio_deploy -N "" -C "github-actions-deploy"
-```
-
-That writes two files: `abtin_portfolio_deploy` (private) and
-`abtin_portfolio_deploy.pub` (public).
-
-### 3b. Authorize the public key on your server
-
-```bash
-ssh-copy-id -i ~/.ssh/abtin_portfolio_deploy.pub user@your-server
-```
-
-Or manually append the contents of the `.pub` file to
-`~/.ssh/authorized_keys` on the server.
-
-Test that it works before touching GitHub:
-
-```bash
-ssh -i ~/.ssh/abtin_portfolio_deploy user@your-server "echo connected"
-```
-
-If that does not print `connected`, fix it now. CI cannot fix an SSH problem.
-
-### 3c. Capture the server's host key
-
-This prevents a man-in-the-middle from impersonating your server:
-
-```bash
-ssh-keyscan -H your-server.com
-```
-
-Copy the whole output.
-
-### 3d. Add the secrets on GitHub
-
-Repo -> **Settings** -> **Secrets and variables** -> **Actions** -> **New repository secret**.
-
-| Secret | Value | Required |
-|---|---|---|
-| `SSH_PRIVATE_KEY` | full contents of `~/.ssh/abtin_portfolio_deploy`, including the BEGIN/END lines | yes |
-| `SSH_HOST` | your server IP or hostname | yes |
-| `SSH_USER` | the SSH user you log in as | yes |
-| `DEPLOY_PATH` | e.g. `/var/www/abtin-portfolio` | yes |
-| `SSH_KNOWN_HOSTS` | output of `ssh-keyscan` from 3c | strongly recommended |
-| `SSH_PORT` | only if your SSH is not on 22 | no |
-| `SITE_URL` | e.g. `https://abtinabedi.com`, enables the post-deploy smoke test | no |
-
-To read the private key for copying, without it appearing in your terminal history:
-
-```bash
-pbcopy < ~/.ssh/abtin_portfolio_deploy
-```
-
-That puts it straight on your clipboard. Paste into GitHub, then never think about
-it again.
+No secrets are needed. Netlify authenticates to GitHub through the app connection,
+so there is no SSH key to generate, rotate, or leak.
 
 ---
 
-## 4. Run it
+## 4. Deploy previews
 
-```bash
-git add -A
-git commit -m "feat: add CI/CD pipeline"
-git push origin main
-```
-
-Open the **Actions** tab. You will see the run, both jobs, and every step's log.
-
-You can also trigger it by hand from that tab (the `workflow_dispatch` trigger)
-without pushing anything, which is useful for testing.
+Every pull request gets its own URL with the full site built from that branch.
+Open it, scroll the hero, click through to `/works`, check the console. Merging is
+then a decision about something you have actually looked at.
 
 ---
 
-## 5. Safety features in this pipeline
+## 5. Rolling back
 
-**The gate.** `needs: verify` means a broken frame sequence or a missing font stops
-the deploy before your server is touched.
+Two options, use the first:
 
-**Concurrency control.** `cancel-in-progress: false` means two rapid pushes queue up
-rather than one killing the other halfway through an rsync, which would leave your
-site half-copied.
+**Netlify → Deploys → pick a previous deploy → Publish deploy.** Instant, no
+rebuild, no git archaeology. This is the one to reach for when the site is broken
+right now.
 
-**Deploy path guard.** The workflow refuses to run `rsync --delete` into `/`,
-`/root`, `/var` and friends. `--delete` removes files at the destination that are
-not in the source, so a typo'd path could otherwise be destructive.
-
-**Key cleanup.** The private key is removed from the runner with `if: always()`,
-so it is wiped even when a previous step failed.
-
-**Post-deploy smoke test.** After pm2 reloads, CI curls your live URL. If the site
-does not return 200, the run is marked failed and you get notified, rather than
-finding out from a client.
+**`git revert HEAD && git push`** for the permanent fix, once you are not under
+pressure. Preferred over `git reset --hard` because it does not rewrite history
+that is already pushed.
 
 ---
 
-## 6. Rolling back
+## 6. Troubleshooting
 
-Your git history *is* your rollback mechanism. To undo the last deploy:
+**Build fails with `healthcheck failed`** — read the `FAIL` lines in the Netlify
+deploy log. They name the exact file or check. The previous deploy is still live,
+so nothing is broken for visitors; fix and push again.
 
-```bash
-git revert HEAD
-git push origin main
-```
+**Build fails during dependency install** — `NPM_FLAGS = "--ignore-scripts"` in
+`netlify.toml` is what keeps `ffmpeg-static` from downloading a ~50 MB binary that
+the build never uses. If someone removes that line, this is the first thing to
+check.
 
-That creates a new commit undoing the change, which triggers a normal deploy of the
-previous state. Preferred over `git reset --hard` because it does not rewrite
-history that is already pushed.
+**A page 404s that should not** — the catch-all redirect in `netlify.toml` is last
+and not forced, so real files always win. Check the file is actually committed:
+untracked files exist on your machine and nowhere else.
 
----
+**Site still shows the old version** — assets are cached for a year by design. The
+HTML always revalidates, so a hard refresh (Cmd+Shift+R) settles it. If an asset
+genuinely changed under the same filename, it needs a new filename or a query
+string.
 
-## 7. Troubleshooting
-
-**`Permission denied (publickey)`** — the public key is not in the server's
-`authorized_keys`, or `SSH_PRIVATE_KEY` was pasted incompletely. It must include
-the `-----BEGIN OPENSSH PRIVATE KEY-----` and `-----END-----` lines.
-
-**`Host key verification failed`** — `SSH_KNOWN_HOSTS` is missing or stale. Re-run
-`ssh-keyscan` and update the secret.
-
-**`pm2: command not found`** — pm2 is installed for your login shell but the SSH
-command runs non-interactively. Use the absolute path in the workflow (find it with
-`which pm2` on the server), or symlink it into `/usr/local/bin`.
-
-**Site still shows the old version** — assets are cached for a year by design.
-Hard-refresh (Cmd+Shift+R). Only the HTML is set to always revalidate.
+**Styling or scripts break only on the deployed site** — check the browser console
+for a Content-Security-Policy violation. The CSP in `netlify.toml` allows no
+third-party origins and no inline `<script>`; adding either means updating that
+header.
 
 ---
 
-## 8. What is deliberately *not* automated
+## 7. What is deliberately *not* automated
 
-Regenerating the hero frames does **not** happen in CI. `assets/source/` (the master
+Regenerating the hero frames does not happen in CI. `assets/source/` (the master
 clips) is gitignored, and frame extraction needs ffmpeg and several minutes. Frames
 are generated on your machine with `npm run extract` and committed as build output.
 
-This is a deliberate tradeoff: it keeps deploys to seconds instead of minutes, and
-the clips change very rarely. Back up `assets/source/` somewhere outside the repo,
-since git does not have it.
+That keeps deploys at seconds instead of minutes, for input that changes a few
+times a year. Back up `assets/source/` somewhere outside the repo, since git does
+not have it.

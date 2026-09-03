@@ -1,0 +1,185 @@
+# Netlify configuration for the Abtin Abedi portfolio.
+#
+# The site is fully static: no build step, no runtime dependency. `server.mjs`
+# does NOT run here -- Netlify's CDN serves the files directly. Everything
+# server.mjs did that still matters (cache policy, security headers, pretty
+# URLs) is reproduced below.
+#
+# Local parity: `npm run serve` / `node server.mjs` behaves the same way, so a
+# page that works locally works here.
+
+[build]
+  # The repo root IS the site. Nothing is compiled.
+  publish = "."
+  command = "node scripts/healthcheck.mjs"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+  # The site needs zero packages at runtime. The devDependencies are local
+  # tooling only (ffmpeg-static, puppeteer-core) and ffmpeg-static's postinstall
+  # downloads a ~50 MB binary from GitHub -- a slow, pointless failure point in
+  # a build that never touches ffmpeg. Skip every install script.
+  NPM_FLAGS = "--ignore-scripts"
+
+
+# ---------------------------------------------------------------- caching
+#
+# Netlify's default is `public, max-age=0, must-revalidate` on everything,
+# which would make all 193 hero frames revalidate on every repeat visit.
+# These rules restore the policy from server.mjs.
+
+# The hero frame sequence, video clips and icons are regenerated wholesale and
+# busted by a deploy, never edited in place under the same name.
+[[headers]]
+  for = "/assets/frames/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The CV is replaced in place under the same filename, so it must not inherit
+# the immutable year above.
+[[headers]]
+  for = "/assets/cv/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Stylesheets and scripts are not content-hashed: short cache, always revalidated.
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# The page shells must always revalidate so a deploy is visible immediately.
+# Listed one by one: a "/*.html" glob is not a documented header pattern, and a
+# rule that silently never matches is worse than three explicit ones.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/works"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/works.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/404.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+
+# ---------------------------------------------------------------- security
+#
+# The CSP is deliberately narrow: no inline <script> and no third-party origins
+# exist in this site. 'unsafe-inline' is needed for style only, because the
+# markup carries inline style="" attributes; data: covers the inline SVG favicon
+# and the CSS grain texture.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+
+
+# ---------------------------------------------------------------- redirects
+#
+# Rules are evaluated top to bottom. `force = true` is required to shadow a file
+# that actually exists in the publish directory.
+
+# Repo plumbing lives in the same directory as the site. Do not serve it: it
+# documents the deploy process and the server configuration.
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/server.mjs"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/ecosystem.config.cjs"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/package-lock.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Netlify's splat only matches a whole trailing path, not a "*.md" glob, so the
+# docs are listed one by one.
+[[redirects]]
+  from = "/DEPLOY.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/CICD.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Pretty URLs: /works serves works.html. Netlify's Pretty URLs post-processing
+# already does this, but stating it means the site does not depend on a
+# dashboard toggle staying on.
+[[redirects]]
+  from = "/works"
+  to = "/works.html"
+  status = 200
+
+# Anything else that does not exist gets the styled 404, not Netlify's default.
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
