@@ -45,6 +45,10 @@ const COMPRESSIBLE = new Set([".html", ".css", ".js", ".mjs", ".json", ".svg", "
 // the frame sequence and clips are regenerated wholesale, so bust with a deploy.
 const IMMUTABLE = /^\/(assets|fonts|vendor)\//;
 
+// Deck screenshots are overwritten under the same filename whenever a project
+// is redesigned, so they are carved out of the rule above.
+const REPLACED_IN_PLACE = /^\/assets\/shots\//;
+
 const etagCache = new Map();
 
 function etagFor(file, st) {
@@ -63,6 +67,7 @@ function cacheControl(urlPath, ext) {
   // A document like the CV lives under /assets but is replaced in place under
   // the same name, so it must not inherit the immutable year below.
   if (ext === ".pdf") return "public, max-age=3600, must-revalidate";
+  if (REPLACED_IN_PLACE.test(urlPath)) return "public, max-age=3600, must-revalidate";
   if (IMMUTABLE.test(urlPath)) return "public, max-age=31536000, immutable";
   return "public, max-age=3600, must-revalidate";        // css/js: short, revalidated
 }

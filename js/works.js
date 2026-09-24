@@ -82,6 +82,67 @@
     document.querySelectorAll(".wrk-reveal").forEach((el) => io.observe(el));
   }
 
+  /* ---------- pagespeed dials ----------
+     The markup already carries the finished arc and numeral, so the scores are
+     correct with JS off, blocked or broken. Arming is what winds them back to
+     zero; an observer then plays them once the deck is on screen, the way the
+     PageSpeed report plays its own dials.
+
+     Arc and numeral run off one loop and one easing curve rather than a CSS
+     transition plus a separate counter, so the ring closes on the exact frame
+     the number lands instead of the two drifting apart. */
+
+  const DIAL_DURATION = 1100; // same as the stat counters on the home page
+
+  function initDials() {
+    const blocks = [...document.querySelectorAll(".psi")];
+    if (!blocks.length || reducedMotion) return;
+
+    const armed = new Map();
+
+    for (const block of blocks) {
+      const gauges = [...block.querySelectorAll(".gauge")].map((gauge) => {
+        const arc = gauge.querySelector(".gauge__arc");
+        const value = gauge.querySelector(".gauge__value");
+        const empty = parseFloat(arc.getAttribute("stroke-dasharray"));
+        const full = parseFloat(arc.getAttribute("stroke-dashoffset"));
+        const score = parseInt(value.textContent, 10);
+
+        arc.setAttribute("stroke-dashoffset", empty);
+        value.textContent = "0";
+        return { arc, value, empty, full, score };
+      });
+      if (gauges.length) armed.set(block, gauges);
+    }
+
+    const play = (gauges) => {
+      const start = performance.now();
+      const tick = (now) => {
+        const t = Math.min((now - start) / DIAL_DURATION, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        for (const g of gauges) {
+          g.arc.setAttribute("stroke-dashoffset", g.empty + (g.full - g.empty) * eased);
+          g.value.textContent = Math.round(g.score * eased);
+        }
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const gauges = armed.get(entry.target);
+          if (gauges) play(gauges);
+          io.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.35 }
+    );
+    armed.forEach((_, block) => io.observe(block));
+  }
+
   /* ---------- ongoing roles ----------
      A hand-written "3 mos" is wrong three months later. The markup keeps a
      readable value so the page is correct without JS; this recomputes it from
@@ -133,6 +194,7 @@
     initTenure();
     initSpy();
     initReveal();
+    initDials();
 
     let lenis = null;
     if (!reducedMotion && window.Lenis) {

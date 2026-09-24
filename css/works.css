@@ -573,10 +573,12 @@
 
 /* phone */
 
+/* Sized to the screen of a current phone (the shots are real device captures,
+   cropped to the display), not the 16:9 the placeholder schematic assumed. */
 .deck__frame--mobile {
-  max-width: 330px;
-  aspect-ratio: 360 / 640;
-  border-radius: 26px;
+  max-width: 320px;
+  aspect-ratio: 720 / 1545;
+  border-radius: 34px;
 }
 
 /* browser window: the chrome bar is real markup, so each project can carry
@@ -717,6 +719,136 @@
   color: rgba(242, 237, 227, 0.72);
 }
 
+/* ---------- pagespeed gauges ----------
+   The PageSpeed Insights dial, rebuilt as SVG rather than pasted in as a
+   screenshot: it stays sharp at any size, costs about a kilobyte, and a future
+   score only has to change one dash offset instead of shipping a new image.
+
+   Thresholds are Lighthouse's own -- 90+ passes, 50-89 is average, under 50
+   fails -- and the status class carries the colour. Track, arc and numeral all
+   read `currentColor`, so one class recolours the whole dial. */
+
+.psi {
+  margin-top: 2rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.psi__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 227, 0.4);
+  transition: color 0.35s var(--ease);
+}
+
+.psi__label:hover,
+.psi__label:focus-visible {
+  color: var(--cream);
+}
+
+.psi__label .icon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+/* Four fixed columns rather than a wrapping flex row: the deck body narrows
+   with the viewport, and a row that breaks 3 + 1 reads as a mistake. The dial
+   shrinks inside its cell instead. */
+.psi__gauges {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1.2rem;
+  max-width: 440px;
+}
+
+/* Wide enough that "Accessibility" sits on one line; the dial keeps its own
+   fixed size inside, so the label is what sets the column. */
+.gauge {
+  min-width: 0;
+  text-align: center;
+}
+
+.gauge--pass { color: #0cce6b; }
+.gauge--average { color: #ffa400; }
+.gauge--fail { color: #ff4e42; }
+
+.gauge__dial {
+  position: relative;
+  width: min(74px, 100%);
+  margin: 0 auto;
+}
+
+.gauge__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.gauge__track,
+.gauge__arc {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 8;
+}
+
+/* Lighthouse tints the track with the score colour rather than a neutral grey,
+   which is what keeps a low score legible against a dark page. */
+.gauge__track {
+  opacity: 0.2;
+}
+
+.gauge__arc {
+  stroke-linecap: round;
+}
+
+.gauge__value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.32rem;
+  font-weight: 500;
+  line-height: 1;
+  color: currentColor;
+  font-variant-numeric: tabular-nums;
+}
+
+.gauge__label {
+  margin-top: 0.6rem;
+  font-size: 0.56rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: rgba(242, 237, 227, 0.45);
+}
+
+.psi__metrics {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgba(242, 237, 227, 0.4);
+}
+
+.psi__metrics b {
+  font-weight: 500;
+  color: rgba(242, 237, 227, 0.82);
+  font-variant-numeric: tabular-nums;
+}
+
 .deck__actions {
   margin-top: 2.2rem;
   display: flex;
@@ -728,6 +860,75 @@
   padding: 0.8rem 1.6rem;
   font-size: 0.78rem;
 }
+
+/* ---------- store badges ----------
+   The App Store and Google Play badges, set in the site's own type rather than
+   pasted in as the official artwork: the PNGs ship at a fixed size, go soft on
+   a retina screen and carry their own font. Only the two logo marks are
+   reproduced, which is the part that actually has to be exact.
+
+   Sized to sit level with .btn--sm so a badge and a button share a row. */
+
+.store {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 1.05rem;
+  border-radius: 12px;
+  line-height: 1;
+  transition: transform 0.35s var(--ease), background 0.3s ease, border-color 0.3s ease;
+}
+
+.store:hover {
+  transform: translateY(-2px);
+}
+
+.store--apple {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.store--play {
+  background: var(--ink-2);
+  color: var(--cream);
+  border: 1px solid rgba(242, 237, 227, 0.22);
+}
+
+.store--play:hover {
+  border-color: rgba(242, 237, 227, 0.42);
+}
+
+.store__mark {
+  width: 25px;
+  height: 25px;
+  flex: none;
+}
+
+/* the Apple mark is one colour and takes the badge's; the Play mark is four */
+.store--apple .store__mark {
+  fill: currentColor;
+}
+
+.store__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-align: left;
+}
+
+.store__top {
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  opacity: 0.72;
+}
+
+.store__name {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
 
 /* ---------- outro ---------- */
 
@@ -946,6 +1147,16 @@ body.wrk-js .wrk-reveal.is-in {
   .deck__actions .btn {
     flex: 1 1 auto;
     text-align: center;
+  }
+
+  .psi__gauges {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.3rem 0.8rem;
+    max-width: 320px;
+  }
+
+  .psi__metrics {
+    gap: 1.1rem;
   }
 
   .wrk__outro-actions .btn {

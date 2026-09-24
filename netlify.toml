@@ -56,6 +56,13 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Deck screenshots are overwritten under the same filename when a project is
+# redesigned, so they get the short revalidated cache instead of the year above.
+[[headers]]
+  for = "/assets/shots/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
 # The CV is replaced in place under the same filename, so it must not inherit
 # the immutable year above.
 [[headers]]
