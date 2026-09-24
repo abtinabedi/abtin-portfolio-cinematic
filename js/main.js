@@ -19,7 +19,6 @@
   const pillarsSection = $("#pillars");
   const pillars = [...document.querySelectorAll(".pillar")];
   const railFill = $("#pillars-rail-fill");
-  const preloaderPct = $("#preloader-pct");
   const tiltCard = $(".work__all");
 
   const FRAMES_DIR = "assets/frames/hero/";
@@ -68,7 +67,7 @@
   const isReady = (img) => img && img.complete && img.naturalWidth;
 
   function drawFrame(index) {
-    // Frames past the preloader gate stream in behind the page. Until the exact
+    // Frames past the first batch stream in behind the page. Until the exact
     // one arrives, hold the nearest earlier frame and keep asking on each tick.
     let i = index;
     while (i > 0 && !isReady(state.frames[i])) i--;
@@ -95,7 +94,7 @@
     return FRAMES_DIR + "frame_" + String(i + 1).padStart(4, "0") + ".webp";
   }
 
-  // The curtain lifts once this many frames are in, not all of them: the rest
+  // preload() resolves once this many frames are in, not all of them: the rest
   // load in order behind the page, well ahead of anyone scrolling to them.
   const PRELOAD_GATE = 24;
 
@@ -112,7 +111,6 @@
     const gateOpen = new Promise((resolve) => (openGate = resolve));
     const onOne = () => {
       loaded += 1;
-      preloaderPct.textContent = Math.min(100, Math.round((loaded / gate) * 100));
       if (loaded >= gate) openGate();
     };
 
@@ -402,12 +400,11 @@
     try {
       await preload();
     } catch (err) {
-      // no frames means a still hero, not a stuck preloader
+      // no frames means the CSS poster stays up as a still hero
       console.warn(err);
     } finally {
-      document.body.classList.add("is-loaded");
-      // letters ride in right after the curtain lifts
-      setTimeout(() => document.body.classList.add("is-ready"), reducedMotion ? 0 : 250);
+      // the first batch of frames is in: the scrub is ready (scripts/verify*.mjs wait on this)
+      document.body.classList.add("is-ready");
     }
   }
 
