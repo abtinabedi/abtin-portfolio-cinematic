@@ -63,6 +63,12 @@
   [headers.values]
     Cache-Control = "public, max-age=3600, must-revalidate"
 
+# The share card is re-shot under the same filename when the hero changes.
+[[headers]]
+  for = "/assets/og/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
 # The CV is replaced in place under the same filename, so it must not inherit
 # the immutable year above.
 [[headers]]

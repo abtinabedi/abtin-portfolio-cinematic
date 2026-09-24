@@ -27,26 +27,6 @@
   --icon: url("../assets/icons/work.svg");
 }
 
-/* ---------- skip link ---------- */
-
-.skip {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 200;
-  padding: 0.9rem 1.4rem;
-  background: var(--emerald);
-  color: var(--ink);
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.skip:focus {
-  left: 0;
-}
-
 /* ---------- top bar ---------- */
 
 .wnav {

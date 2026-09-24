@@ -45,9 +45,9 @@ const COMPRESSIBLE = new Set([".html", ".css", ".js", ".mjs", ".json", ".svg", "
 // the frame sequence and clips are regenerated wholesale, so bust with a deploy.
 const IMMUTABLE = /^\/(assets|fonts|vendor)\//;
 
-// Deck screenshots are overwritten under the same filename whenever a project
-// is redesigned, so they are carved out of the rule above.
-const REPLACED_IN_PLACE = /^\/assets\/shots\//;
+// Deck screenshots and the share card are overwritten under the same filename
+// whenever they are re-shot, so they are carved out of the rule above.
+const REPLACED_IN_PLACE = /^\/assets\/(shots|og)\//;
 
 const etagCache = new Map();
 
@@ -166,9 +166,19 @@ const server = createServer((req, res) => {
   if (range) {
     const m = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
     if (m) {
-      let start = m[1] ? parseInt(m[1], 10) : 0;
-      let end = m[2] ? parseInt(m[2], 10) : st.size - 1;
-      if (Number.isNaN(start) || Number.isNaN(end) || start > end || end >= st.size) {
+      let start, end;
+      if (m[1]) {
+        start = parseInt(m[1], 10);
+        // an end past EOF is legal and means "to the end" (RFC 9110 14.1.2)
+        end = m[2] ? Math.min(parseInt(m[2], 10), st.size - 1) : st.size - 1;
+      } else {
+        // suffix form "bytes=-N" asks for the last N bytes, not the first N
+        const suffix = parseInt(m[2], 10);
+        start = Math.max(0, st.size - suffix);
+        end = st.size - 1;
+        if (!suffix) start = st.size; // "bytes=-0" or bare "bytes=-" is unsatisfiable
+      }
+      if (Number.isNaN(start) || Number.isNaN(end) || start > end || start >= st.size) {
         res.writeHead(416, { "Content-Range": `bytes */${st.size}` }).end();
         return;
       }

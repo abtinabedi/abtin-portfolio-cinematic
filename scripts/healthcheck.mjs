@@ -94,6 +94,15 @@ if (cvRef && !existsSync(join(ROOT, cvRef[1]))) {
   ok(`CV download resolves (${cvRef[1]})`);
 }
 
+/* ---------- 1c. the share card each page advertises exists ---------- */
+
+const ogRefs = [...new Set(
+  [...html.matchAll(/<meta (?:property|name)="(?:og|twitter):image" content="https:\/\/abtin\.works\/([^"]+)"/g)].map((m) => m[1])
+)];
+const ogMissing = ogRefs.filter((r) => !existsSync(join(ROOT, r)));
+if (ogMissing.length) bad(`share image(s) missing from the repo: ${ogMissing.join(", ")}`);
+else if (ogRefs.length) ok(`share image resolves (${ogRefs.join(", ")})`);
+
 /* ---------- 2 + 3. frame sequence integrity ---------- */
 
 const framesDir = join(ROOT, "assets", "frames", "hero");

@@ -35,6 +35,8 @@
     pillarsTop: 0,
     pillarsRange: 1,
     pillarIndex: -1,
+    pillarBlur: -1,
+    lastScroll: -1,
     vw: window.innerWidth,
     vh: window.innerHeight,
     needsDraw: true,
@@ -63,9 +65,15 @@
 
   /* ---------- canvas ---------- */
 
+  const isReady = (img) => img && img.complete && img.naturalWidth;
+
   function drawFrame(index) {
-    const img = state.frames[index];
-    if (!img || !img.complete || !img.naturalWidth) return;
+    // Frames past the preloader gate stream in behind the page. Until the exact
+    // one arrives, hold the nearest earlier frame and keep asking on each tick.
+    let i = index;
+    while (i > 0 && !isReady(state.frames[i])) i--;
+    const img = state.frames[i];
+    if (!isReady(img)) return;
 
     const cw = canvas.width;
     const ch = canvas.height;
@@ -77,8 +85,8 @@
 
     ctx.clearRect(0, 0, cw, ch);
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-    state.drawnIndex = index;
-    state.needsDraw = false;
+    state.drawnIndex = i;
+    state.needsDraw = i !== index;
   }
 
   /* ---------- preload ---------- */
@@ -87,16 +95,25 @@
     return FRAMES_DIR + "frame_" + String(i + 1).padStart(4, "0") + ".webp";
   }
 
+  // The curtain lifts once this many frames are in, not all of them: the rest
+  // load in order behind the page, well ahead of anyone scrolling to them.
+  const PRELOAD_GATE = 24;
+
   async function preload() {
     const res = await fetch(FRAMES_DIR + "manifest.json");
+    if (!res.ok) throw new Error("frame manifest: HTTP " + res.status);
     const manifest = await res.json();
     state.frameCount = manifest.count;
     state.frames = new Array(manifest.count);
 
+    const gate = Math.min(PRELOAD_GATE, state.frameCount);
     let loaded = 0;
+    let openGate;
+    const gateOpen = new Promise((resolve) => (openGate = resolve));
     const onOne = () => {
       loaded += 1;
-      preloaderPct.textContent = Math.round((loaded / state.frameCount) * 100);
+      preloaderPct.textContent = Math.min(100, Math.round((loaded / gate) * 100));
+      if (loaded >= gate) openGate();
     };
 
     // first frame first, so the hero can paint immediately
@@ -105,7 +122,7 @@
 
     const CONCURRENCY = 10;
     let next = 1;
-    await Promise.all(
+    const all = Promise.all(
       Array.from({ length: CONCURRENCY }, async () => {
         while (next < state.frameCount) {
           const i = next++;
@@ -113,6 +130,7 @@
         }
       })
     );
+    await Promise.race([gateOpen, all]);
   }
 
   function loadImage(i) {
@@ -132,7 +150,17 @@
 
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
+  // how blurred pillar copy gets at a hand-off, and where in its third of the
+  // scroll the blur starts (out) or has cleared (in)
+  const PILLAR_BLUR_MAX = 14;
+  const PILLAR_BLUR_OUT = 0.7;
+  const PILLAR_BLUR_IN = 0.25;
+
   function update(scroll) {
+    // nothing moved and the scrub has settled: skip every style write
+    if (scroll === state.lastScroll && state.current === state.target && !state.needsDraw) return;
+    state.lastScroll = scroll;
+
     /* hero scrub */
     const hp = clamp01((scroll - state.heroTop) / state.heroRange);
     state.target = hp * (state.frameCount - 1);
@@ -160,11 +188,28 @@
     /* pillars: one at a time */
     const pp = clamp01((scroll - state.pillarsTop) / state.pillarsRange);
     const idx = Math.min(2, Math.floor(pp * 3));
-    if (idx !== state.pillarIndex) {
+    const idxChanged = idx !== state.pillarIndex;
+    if (idxChanged) {
       pillars.forEach((el, i) => el.classList.toggle("is-active", i === idx));
       state.pillarIndex = idx;
     }
     railFill.style.transform = "scaleY(" + pp + ")";
+
+    /* pillars: copy blurs out toward the end of its third of the scroll and the
+       next one sharpens in from the start of its own. The first holds sharp on
+       the way in and the last on the way out, so the section opens and closes
+       on readable type. */
+    if (!reducedMotion) {
+      const local = pp * 3 - idx; // 0..1 inside the active pillar's third
+      let b = 0;
+      if (idx < pillars.length - 1) b = Math.max(b, clamp01((local - PILLAR_BLUR_OUT) / (1 - PILLAR_BLUR_OUT)));
+      if (idx > 0) b = Math.max(b, clamp01((PILLAR_BLUR_IN - local) / PILLAR_BLUR_IN));
+      const px = Math.round(b * b * PILLAR_BLUR_MAX * 10) / 10;
+      if (px !== state.pillarBlur || idxChanged) {
+        pillars[idx].style.setProperty("--scroll-blur", px + "px");
+        state.pillarBlur = px;
+      }
+    }
   }
 
   /* ---------- tilt on the projects card ----------
@@ -356,6 +401,9 @@
 
     try {
       await preload();
+    } catch (err) {
+      // no frames means a still hero, not a stuck preloader
+      console.warn(err);
     } finally {
       document.body.classList.add("is-loaded");
       // letters ride in right after the curtain lifts

@@ -87,6 +87,39 @@ a {
   outline-offset: 3px;
 }
 
+/* read by assistive tech, never painted */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- skip link ---------- */
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 0.9rem 1.4rem;
+  background: var(--emerald);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skip:focus {
+  left: 0;
+}
+
 img,
 video,
 canvas {
@@ -184,6 +217,7 @@ body.is-loaded .preloader {
 
 .nav__links {
   display: flex;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -206,6 +240,7 @@ body.is-loaded .preloader {
    will not fit a phone, and losing a nav item would cost more than the word. */
 
 .nav__cv,
+.nav__links .nav__cv,
 .wnav__links .nav__cv {
   display: inline-flex;
   align-items: center;
@@ -452,13 +487,22 @@ body.is-ready .ltr {
   padding: 0 clamp(1.25rem, 6vw, 6rem);
   opacity: 0;
   transform: translateY(50px);
-  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+  filter: blur(10px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease), filter 0.65s var(--ease);
   pointer-events: none;
 }
 
 .pillar.is-active {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
+}
+
+/* The scroll-linked blur rides on the copy, not on .pillar, so it never meets
+   the class transition above: main.js writes it every frame the scroll moves. */
+.pillar__title,
+.pillar__desc {
+  filter: blur(var(--scroll-blur, 0px));
 }
 
 .pillar__title {
@@ -1111,6 +1155,12 @@ body.is-ready .ltr {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .pillar,
+  .pillar__title,
+  .pillar__desc {
+    filter: none;
   }
 
   .preloader {
